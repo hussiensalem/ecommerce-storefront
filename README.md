@@ -84,8 +84,7 @@ ecommerce-storefront/
 - GitHub: [hussiensalem](https://github.com/hussiensalem) | [LinkedIn](http://www.linkedin.com/in/hussein-salem-cs)
 
 ## 👥 Team Members
-- [Kareem Elbana](https://github.com/kareemmelbana)  - [Lujain Wahed](https://github.com/Lujj1)  
-- [Nour Eltnahy](https://github.com/noureltnahy) - [Rehab Hedar](https://github.com/rehabHedar)
+- [Kareem Elbana](https://github.com/kareemmelbana)  - [Lujain Wahed](https://github.com/Lujj1)  - [Nour Eltnahy](https://github.com/noureltnahy) - [Rehab Hedar](https://github.com/rehabHedar)
 
 ---
 
