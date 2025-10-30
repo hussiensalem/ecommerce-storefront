@@ -84,10 +84,10 @@ ecommerce-storefront/
 - GitHub: [hussiensalem](https://github.com/hussiensalem) | [LinkedIn](http://www.linkedin.com/in/hussein-salem-cs)
 
 ## 👥 Team Members
-- [Member 1 Name](https://github.com/username1)  
-- [Member 2 Name](https://github.com/username2)  
-- [Member 3 Name](https://github.com/username3) 
-- [Member 4 Name](https://github.com/username4)
+- [Member 1 Name](https://github.com/kareemmelbana)  
+- [Member 2 Name](https://github.com/Lujj1)  
+- [Member 3 Name](https://github.com/noureltnahy) 
+- [Member 4 Name](https://github.com/rehabHedar)
 
 ---
 
