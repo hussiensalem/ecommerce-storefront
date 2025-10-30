@@ -1,70 +1,93 @@
-# Getting Started with Create React App
+# 🛒 E-Commerce Storefront
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A responsive and modern store front built with React for the frontend.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+- User can browse products, search and filter  
+- Product details view with images  
+- Shopping cart & checkout flow  
+- Responsive design (desktop + mobile)  
+- Clean folder structure: `src/components`, `src/pages`, etc.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🧰 Tech Stack
 
-### `npm test`
+**Frontend:** React.js, Tailwind CSS  
+**Build tool:** Create React App  
+**Styling:** Tailwind  
+**Version control / Deployment:** GitHub  
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+*(Backend/API will be added later)*
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## ⚙️ Installation & Setup
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Clone the repository  
+   ```bash
+   git clone https://github.com/hussiensalem/ecommerce-storefront.git
+   cd ecommerce-storefront
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. Install dependencies  
+   ```bash
+   npm install
+   ```
 
-### `npm run eject`
+3. Start the application  
+   ```bash
+   npm start
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+4. Open your browser at  
+   ```
+   http://localhost:3000
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 📁 Project Structure
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
+ecommerce-storefront/
+│
+├─ public/
+│
+├─ src/
+│   ├─ components/       ← UI components
+│   ├─ pages/            ← Page views
+│   ├─ assets/           ← Images, icons, etc
+│   └─ App.js
+│
+├─ .gitignore
+├─ package.json
+└─ README.md
+```
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🔮 Future Improvements
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Connect to backend API (products, users, orders)  
+- Add authentication (login/signup)  
+- Implement payment gateway (Stripe, PayPal)  
+- Add admin dashboard  
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 👨‍💻 Author
 
-### Analyzing the Bundle Size
+**Hussein Salem**  
+Full-Stack Developer  
+- GitHub: [hussiensalem](https://github.com/hussiensalem)  
+- LinkedIn: [Hussein Salem](http://www.linkedin.com/in/hussein-salem-cs)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## 📝 License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the MIT License.
