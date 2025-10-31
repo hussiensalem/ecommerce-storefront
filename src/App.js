@@ -4,6 +4,8 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Footer from "./components/Footer";
 import Products from "./pages/Products";
+import Home from "./pages/Home";
+
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
           element={
             <>
               <Hero />
+              < Home />
             </>
           }
         />
