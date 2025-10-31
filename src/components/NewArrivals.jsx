@@ -47,7 +47,7 @@ const NewArrivalsCarousel = ({ products }) => {
   return (
     <section className="max-w-7xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-3xl font-semibold">New Arrivals</h2>
+        <h2 className="text-[40px] font-semibold">New Arrivals</h2>
         <div className="flex items-center gap-3">
           {Array.from({ length: pageCount }).map((_, idx) => {
             const isActive = idx === activePage;
@@ -57,7 +57,7 @@ const NewArrivalsCarousel = ({ products }) => {
                 onClick={() => goToPage(idx)}
                 aria-label={`Go to page ${idx + 1}`}
                 className={
-                  "w-2.5 h-2.5 rounded-full transition-all duration-200 " +
+                  "w-2 h-2 rounded-full transition-all duration-200 " +
                   (isActive ? "bg-gray-800 ring-2 ring-gray-800" : "bg-gray-300")
                 }
               />
