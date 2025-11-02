@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProductCard = ({ image, name, price, isNew }) => {
+const ProductCard = ({ image, name, price, isNew, isHot }) => {
   return (
     <div className="flex flex-col">
       <div className="relative w-full aspect-[3/4] group">
@@ -11,8 +11,14 @@ const ProductCard = ({ image, name, price, isNew }) => {
         />
 
         {isNew && (
-          <span className="absolute top-3 left-3 bg-white text-black text-xs font-semibold px-2 py-1">
+          <span className="absolute top-3 left-3 z-10 bg-white text-black rounded-md text-[10px] md:text-xs font-semibold px-2 py-1">
             NEW
+          </span>
+        )}
+
+        {isHot && (
+          <span className="absolute top-3 right-3 z-10 bg-white text-black rounded-md text-[10px] md:text-xs font-semibold px-2 py-1">
+            HOT
           </span>
         )}
 
@@ -28,7 +34,7 @@ const ProductCard = ({ image, name, price, isNew }) => {
           {name}
         </h3>
 
-        <div className="flex items-center text-grey-500 text-sm">
+        <div className="flex items-center text-gray-500 text-sm">
           {"★".repeat(5)}
         </div>
 

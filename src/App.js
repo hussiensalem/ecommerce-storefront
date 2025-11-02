@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
 import Footer from "./components/Footer";
 import Products from "./pages/Products";
 import Home from "./pages/Home";
@@ -10,20 +9,23 @@ import Home from "./pages/Home";
 function App() {
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Hero />
-              < Home />
-            </>
-          }
-        />
-        <Route path="/products" element={<Products />} />
-      </Routes>
-      <Footer />
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <main className="flex-1">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  < Home />
+                </>
+              }
+            />
+            <Route path="/products" element={<Products />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
     </Router>
   );
 }

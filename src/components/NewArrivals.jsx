@@ -45,8 +45,8 @@ const NewArrivalsCarousel = ({ products }) => {
   };
 
   return (
-    <section className="max-w-7xl mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-4">
+    <section className="max-w-7xl mx-auto px-4 py-5">
+      <div className="flex items-center justify-between mb-4 py-5">
         <h2 className="text-[40px] font-semibold">New Arrivals</h2>
         <div className="flex items-center gap-3">
           {Array.from({ length: pageCount }).map((_, idx) => {

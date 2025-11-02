@@ -5,7 +5,7 @@ import usb from "../assets/usb.png";
 
 const ShopCollection = () => {
   return (
-    <section className="w-[80%] mx-auto py-16 md:max-w-7xl">
+    <section className="w-[80%] mx-auto py-5 md:max-w-7xl">
       <h2 className="text-[40px] font-semibold mb-8 text-gray-900 text-center md:text-left">
         Shop Collection
       </h2>
@@ -22,7 +22,8 @@ const ShopCollection = () => {
             <h3 className="text-4xl md:text-5xl font-semibold text-gray-900">
               Headband
             </h3>
-            <button className="underline text-gray-600 text-lg font-medium flex items-center gap-1 group-hover:gap-2 transition-all py-1 md:py-5">
+            <button className="underline text-gray-600 text-lg font-medium flex items-center gap-1 group-hover:gap-2 transition-all py-1 md:py-5
+            ">
               Collection →
             </button>
           </div>
