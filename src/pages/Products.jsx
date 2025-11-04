@@ -1,12 +1,14 @@
 import React from "react";
+import Shop from "../components/shop";
+import NewsletterSection from "../components/NewsLetter";
 
-function Products() {
+const Products = () => {
   return (
-    <div className="text-center mt-20">
-      <h1 className="text-3xl font-bold">Products Page</h1>
-      <p>هنا هيكون المحتوى الخاص بالمنتجات قريباً.</p>
-    </div>
-  );
-}
+  <>
+  <Shop />
+  <NewsletterSection />
+  </>
+  )
+};
 
 export default Products;
