@@ -7,6 +7,7 @@ import headphone3 from "../assets/headphone3.png";
 import headphone4 from "../assets/headphone4.png";
 import earbuds1 from "../assets/earbuds1.png";
 import shopBanner from "../assets/shopBanner.jpeg";
+import ProductDetailModal from "../components/ProductDetailModal";
 
 const products = [
   {
@@ -18,6 +19,7 @@ const products = [
     isNew: true,
     discount: 25,
     category: "Headphones",
+    description: "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design."
   },
   {
     id: 2,
@@ -28,6 +30,7 @@ const products = [
     isNew: false,
     discount: 22,
     category: "Headphones",
+    description: "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design."
   },
   {
     id: 3,
@@ -38,6 +41,7 @@ const products = [
     isNew: true,
     discount: 25,
     category: "Headphones",
+    description: "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design."
   },
   {
     id: 4,
@@ -48,6 +52,7 @@ const products = [
     isNew: false,
     discount: 20,
     category: "Earbuds",
+    description: "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design."
   },
   {
     id: 5,
@@ -58,6 +63,7 @@ const products = [
     isNew: true,
     discount: 17,
     category: "Earbuds",
+    description: "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design."
   },
    {
     id: 6,
@@ -68,6 +74,7 @@ const products = [
     isNew: true,
     discount: 25,
     category: "Headphones",
+    description: "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design."
   },
   {
     id: 7,
@@ -78,6 +85,7 @@ const products = [
     isNew: false,
     discount: 22,
     category: "Headphones",
+    description: "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design."
   },
   {
     id: 8,
@@ -88,6 +96,7 @@ const products = [
     isNew: true,
     discount: 25,
     category: "Headphones",
+    description: "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design."
   },
   {
     id: 9,
@@ -98,6 +107,7 @@ const products = [
     isNew: false,
     discount: 20,
     category: "Earbuds",
+    description: "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design."
   },
   {
     id: 10,
@@ -108,6 +118,7 @@ const products = [
     isNew: true,
     discount: 17,
     category: "Earbuds",
+    description: "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design."
   },
   {
     id: 11,
@@ -118,6 +129,7 @@ const products = [
     isNew: false,
     discount: 22,
     category: "Headphones",
+    description: "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design."
   },
    {
     id: 12,
@@ -128,6 +140,7 @@ const products = [
     isNew: true,
     discount: 25,
     category: "Headphones",
+    description: "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design."
   },
   {
     id: 13,
@@ -138,6 +151,7 @@ const products = [
     isNew: false,
     discount: 20,
     category: "Earbuds",
+    description: "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design."
   },
 ];
 
@@ -152,6 +166,9 @@ export default function Shop() {
   const categoryRef = useRef(null);
   const [sortOpen, setSortOpen] = useState(false);
   const sortRef = useRef(null);
+
+  // <-- added for modal
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const priceOptions = [
     { value: "all", label: "All Prices" },
@@ -392,6 +409,7 @@ export default function Shop() {
             price={`$${p.price.toFixed(2)}`}
             isNew={p.isNew}
             isHot={p.isHot}
+            onClick={() => setSelectedProduct(p)}
           />
         ))}
       </div>
@@ -406,6 +424,14 @@ export default function Shop() {
             Show more
           </button>
         </div>
+      )}
+
+      {/* Product details modal */}
+      {selectedProduct && (
+        <ProductDetailModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+        />
       )}
     </section>
   )
