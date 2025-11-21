@@ -1,14 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const ProductCard = ({ image, name, price, isNew, isHot, onClick }) => {
+const ProductCard = ({ id, image, name, price, isNew, isHot, onClick }) => {
+  const navigate = useNavigate();
+  const [imageError, setImageError] = useState(false);
+
+  const handleClick = () => {
+    // If onClick is provided, use it (for backward compatibility)
+    if (onClick) {
+      onClick();
+    } else if (id) {
+      // Otherwise, navigate to product details page
+      navigate(`/products/${id}`);
+    }
+  };
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  const fallbackImage = `https://via.placeholder.com/300x300/CCCCCC/999999?text=No+Image`;
+
   return (
     <div className="flex flex-col">
-      <button onClick={onClick} className="text-left group">
-
-        <div className="relative w-full aspect-[3/4]">
+      <button onClick={handleClick} className="text-left group">
+        <div className="relative w-full aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden">
           <img
-            src={image}
+            src={imageError ? fallbackImage : image}
             alt={name}
+            onError={handleImageError}
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
 
