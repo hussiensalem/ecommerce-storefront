@@ -8,10 +8,10 @@ import headphone2 from "../assets/headphone2.png";
 import headphone3 from "../assets/headphone3.png";
 import headphone4 from "../assets/headphone4.png";
 import earbuds1 from "../assets/earbuds1.png";
-import PromotionSection  from "../components/PromotionBanner";
+import PromotionSection from "../components/PromotionBanner";
 import FeatureSection from "../components/FeaturesBar";
 import InstagramFeed from "../components/InstagramFeed";
-import NewsletterSection from "../components/NewsLetter";
+import { useEffect } from "react";
 
 const products = [
   {
@@ -88,12 +88,15 @@ const products = [
   },
 ];
 
-
 const Home = () => {
+  useEffect(() => {
+    // Scroll to top when Home page loads
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="bg-gray-50 min-h-screen">
-
-      {/* Hero Section */}  
+      {/* Hero Section */}
       <Hero />
       {/* New Arrivals Section */}
       <NewArrivalsCarousel products={products} />
@@ -105,12 +108,8 @@ const Home = () => {
       <PromotionSection />
       {/* Features bar Section */}
       <FeatureSection />
-         {/* Instagram feed Section */}
-         <InstagramFeed />
-
-         <NewsletterSection />
-      
-     
+      {/* Instagram feed Section */}
+      <InstagramFeed />
     </div>
   );
 };

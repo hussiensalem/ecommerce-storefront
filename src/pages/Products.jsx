@@ -1,14 +1,18 @@
 import React from "react";
+import { useEffect } from "react";
 import Shop from "../components/shop";
-import NewsletterSection from "../components/NewsLetter";
 
 const Products = () => {
+  useEffect(() => {
+    // Scroll to top when Products page loads
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-  <>
-  <Shop />
-  <NewsletterSection />
-  </>
-  )
+    <>
+      <Shop />
+    </>
+  );
 };
 
 export default Products;

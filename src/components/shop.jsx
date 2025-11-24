@@ -18,6 +18,8 @@ const products = [
     isNew: true,
     discount: 25,
     category: "Headphones",
+    description:
+      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
   },
   {
     id: 2,
@@ -28,6 +30,8 @@ const products = [
     isNew: false,
     discount: 22,
     category: "Headphones",
+    description:
+      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
   },
   {
     id: 3,
@@ -38,6 +42,8 @@ const products = [
     isNew: true,
     discount: 25,
     category: "Headphones",
+    description:
+      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
   },
   {
     id: 4,
@@ -48,6 +54,8 @@ const products = [
     isNew: false,
     discount: 20,
     category: "Earbuds",
+    description:
+      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
   },
   {
     id: 5,
@@ -58,8 +66,10 @@ const products = [
     isNew: true,
     discount: 17,
     category: "Earbuds",
+    description:
+      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
   },
-   {
+  {
     id: 6,
     name: "Sony - WH-1000XM5 Wireless Noise Canceling",
     image: headphone1,
@@ -68,6 +78,8 @@ const products = [
     isNew: true,
     discount: 25,
     category: "Headphones",
+    description:
+      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
   },
   {
     id: 7,
@@ -78,6 +90,8 @@ const products = [
     isNew: false,
     discount: 22,
     category: "Headphones",
+    description:
+      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
   },
   {
     id: 8,
@@ -88,6 +102,8 @@ const products = [
     isNew: true,
     discount: 25,
     category: "Headphones",
+    description:
+      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
   },
   {
     id: 9,
@@ -98,6 +114,8 @@ const products = [
     isNew: false,
     discount: 20,
     category: "Earbuds",
+    description:
+      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
   },
   {
     id: 10,
@@ -108,6 +126,8 @@ const products = [
     isNew: true,
     discount: 17,
     category: "Earbuds",
+    description:
+      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
   },
   {
     id: 11,
@@ -118,8 +138,10 @@ const products = [
     isNew: false,
     discount: 22,
     category: "Headphones",
+    description:
+      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
   },
-   {
+  {
     id: 12,
     name: "Sony - WH-CH720N Wireless Noise Canceling",
     image: headphone3,
@@ -128,6 +150,8 @@ const products = [
     isNew: true,
     discount: 25,
     category: "Headphones",
+    description:
+      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
   },
   {
     id: 13,
@@ -138,9 +162,10 @@ const products = [
     isNew: false,
     discount: 20,
     category: "Earbuds",
+    description:
+      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
   },
 ];
-
 export default function Shop() {
   const [category, setCategory] = useState("All");
   const [sort, setSort] = useState("default");
@@ -191,7 +216,7 @@ export default function Shop() {
   });
 
   // Sort products
-  const sortedProducts = [...filteredProducts].sort((a, b  ) => {
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
     if (sort === "low-high") return a.price - b.price;
     if (sort === "high-low") return b.price - a.price;
 
@@ -227,11 +252,17 @@ export default function Shop() {
       {/*  Header */}
       <div
         className="relative mb-10 overflow-hidden bg-cover bg-center min-h-[300px] md:min-h-[420px] lg:min-h-[420px] flex items-center justify-center"
-        style={{ backgroundImage: `url(${shopBanner})` }} >
+        style={{ backgroundImage: `url(${shopBanner})` }}
+      >
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative z-10 text-center text-white px-6 space-y-2 md:space-y-7">
-          <p className="text-white/80 text-md md:text-lg  [word-spacing:0.6rem]"><span className="text-white/80">Home  {`>`}  </span> <span className="underline underline-offset-2 decoration-2">Shop</span></p>
+          <p className="text-white/80 text-md md:text-lg  [word-spacing:0.6rem]">
+            <span className="text-white/80">Home {`>`} </span>{" "}
+            <span className="underline underline-offset-2 decoration-2">
+              Shop
+            </span>
+          </p>
           <h1 className="text-4xl md:text-6xl font-semibold">Shop Page</h1>
           <p className="text-md md:text-lg font-semibold text-white/80">
             Discover the best audio gear designed for your lifestyle.
@@ -254,7 +285,9 @@ export default function Shop() {
               <span className="truncate">{currentCategoryLabel}</span>
               <FiChevronDown
                 aria-hidden
-                className={`ml-2 text-gray-500 transition-transform ${categoryOpen ? "rotate-180" : ""}`}
+                className={`ml-2 text-gray-500 transition-transform ${
+                  categoryOpen ? "rotate-180" : ""
+                }`}
               />
             </button>
 
@@ -274,11 +307,15 @@ export default function Shop() {
                           setCategoryOpen(false);
                         }}
                         className={`w-full flex items-center justify-between px-4 py-2 text-sm transition hover:bg-gray-100 focus:bg-gray-100 ${
-                          selected ? "bg-gray-50 text-gray-900" : "text-gray-700"
+                          selected
+                            ? "bg-gray-50 text-gray-900"
+                            : "text-gray-700"
                         }`}
                       >
                         <span>{opt.label}</span>
-                        {selected && <FiCheck aria-hidden className="text-gray-900" />}
+                        {selected && (
+                          <FiCheck aria-hidden className="text-gray-900" />
+                        )}
                       </button>
                     </li>
                   );
@@ -299,7 +336,9 @@ export default function Shop() {
               <span className="truncate">{currentPriceLabel}</span>
               <FiChevronDown
                 aria-hidden
-                className={`ml-2 text-gray-500 transition-transform ${priceOpen ? "rotate-180" : ""}`}
+                className={`ml-2 text-gray-500 transition-transform ${
+                  priceOpen ? "rotate-180" : ""
+                }`}
               />
             </button>
 
@@ -319,11 +358,15 @@ export default function Shop() {
                           setPriceOpen(false);
                         }}
                         className={`w-full flex items-center justify-between px-4 py-2 text-sm transition hover:bg-gray-100 focus:bg-gray-100 ${
-                          selected ? "bg-gray-50 text-gray-900" : "text-gray-700"
+                          selected
+                            ? "bg-gray-50 text-gray-900"
+                            : "text-gray-700"
                         }`}
                       >
                         <span>{opt.label}</span>
-                        {selected && <FiCheck aria-hidden className="text-gray-900" />}
+                        {selected && (
+                          <FiCheck aria-hidden className="text-gray-900" />
+                        )}
                       </button>
                     </li>
                   );
@@ -347,7 +390,9 @@ export default function Shop() {
               <span className="truncate">{currentSortLabel}</span>
               <FiChevronDown
                 aria-hidden
-                className={`ml-2 text-gray-500 transition-transform ${sortOpen ? "rotate-180" : ""}`}
+                className={`ml-2 text-gray-500 transition-transform ${
+                  sortOpen ? "rotate-180" : ""
+                }`}
               />
             </button>
 
@@ -367,14 +412,18 @@ export default function Shop() {
                           setSortOpen(false);
                         }}
                         className={`w-full flex items-center justify-between px-4 py-2 text-sm transition hover:bg-gray-100 focus:bg-gray-100 ${
-                          selected ? "bg-gray-50 text-gray-900" : "text-gray-700"
+                          selected
+                            ? "bg-gray-50 text-gray-900"
+                            : "text-gray-700"
                         }`}
                       >
                         <span>{opt.label}</span>
-                        {selected && <FiCheck aria-hidden className="text-gray-900" />}
+                        {selected && (
+                          <FiCheck aria-hidden className="text-gray-900" />
+                        )}
                       </button>
                     </li>
-                  )
+                  );
                 })}
               </ul>
             )}
@@ -387,6 +436,7 @@ export default function Shop() {
         {visibleProducts.map((p) => (
           <ProductCard
             key={p.id}
+            id={p.id}
             image={p.image}
             name={p.name}
             price={`$${p.price.toFixed(2)}`}
@@ -400,7 +450,9 @@ export default function Shop() {
       {visibleCount < sortedProducts.length && (
         <div className="mt-8 flex justify-center">
           <button
-            onClick={() => setVisibleCount((v) => Math.min(v + 10, sortedProducts.length))}
+            onClick={() =>
+              setVisibleCount((v) => Math.min(v + 10, sortedProducts.length))
+            }
             className="px-6 py-3 bg-white text-black rounded-3xl border border-black hover:bg-gray-900 hover:text-white transition"
           >
             Show more
@@ -408,5 +460,5 @@ export default function Shop() {
         </div>
       )}
     </section>
-  )
+  );
 }
