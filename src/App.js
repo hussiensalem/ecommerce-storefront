@@ -5,8 +5,12 @@ import Footer from "./components/Footer";
 import Products from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
 import Home from "./pages/Home";
-import CartPage from "./pages/CartPage"; 
-
+import CartPage from "./pages/CartPage";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import Checkout from "./pages/Checkout";
 
 function App() {
   return (
@@ -25,6 +29,11 @@ function App() {
             />
             <Route path="/products" element={<Products />} />
             <Route path="/products/:id" element={<ProductDetails />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/checkout" element={<Checkout />} />
             <Route path="/cart" element={<CartPage />} />
           </Routes>
         </main>

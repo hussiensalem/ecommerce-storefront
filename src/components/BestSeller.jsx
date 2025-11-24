@@ -16,6 +16,7 @@ const BestSeller = ({ products }) => {
         {products.slice(0, 8).map((product) => (
           <ProductCard
             key={product.id}
+            id={product.id}
             image={product.image}
             name={product.name}
             price={product.price}

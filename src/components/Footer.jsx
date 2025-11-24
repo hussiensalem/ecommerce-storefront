@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import newsletterBg from "../assets/newsletter.png";
 import { Mail } from "lucide-react";
 
@@ -44,11 +45,11 @@ export default function Footer() {
             </div>
 
             <div className="flex gap-10 text-sm">
-              <a href="#">Home</a>
-              <a href="#">Shop</a>
-              <a href="#">Product</a>
-              <a href="#">Blog</a>
-              <a href="#">Contact Us</a>
+              <Link to="/">Home</Link>
+              <Link to="/products">Shop</Link>
+              <Link to="/products">Product</Link>
+              <Link to="/about">About</Link>
+              <Link to="/contact">Contact Us</Link>
             </div>
           </div>
           <div className="mt-14">
@@ -57,8 +58,8 @@ export default function Footer() {
               <p>Copyright © 2023 E-store. All rights reserved</p>
 
               <div className="flex gap-6">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Use</a>
+                <Link to="/about">Privacy Policy</Link>
+                <Link to="/about">Terms of Use</Link>
               </div>
             </div>
           </div>

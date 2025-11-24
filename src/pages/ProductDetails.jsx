@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FiArrowLeft, FiHeart, FiShare2 } from "react-icons/fi";
 import { FiShoppingCart } from "react-icons/fi";
+import { useAppDispatch } from "../app/hooks";
+import { addItem } from "../features/cart/cartSlice";
 import headphone1 from "../assets/headphone1.png";
 import headphone2 from "../assets/headphone2.png";
 import headphone3 from "../assets/headphone3.png";
@@ -244,7 +246,6 @@ const ProductDetails = () => {
   const [couponMessage, setCouponMessage] = useState("");
   const [showComments, setShowComments] = useState(false);
   const [selectedColor, setSelectedColor] = useState("");
-  const [tick, setTick] = useState(0); // Force re-renders for countdown
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -295,8 +296,7 @@ const ProductDetails = () => {
         setTimeLeft(null);
         clearInterval(interval);
       } else {
-        // Force re-render by updating tick on each second
-        setTick((prev) => prev + 1);
+        // Force re-render on each second for countdown
       }
     }, 1000);
 
@@ -319,16 +319,31 @@ const ProductDetails = () => {
     return { days, hours, minutes, seconds, isEnded: false };
   };
 
+  const dispatch = useAppDispatch();
+
   const handleAddToCart = () => {
-    // TODO: Integrate with cart management (Redux or Context)
-    console.log(`Added ${quantity} of product ${product.id} to cart`);
-    alert(`✅ Added ${quantity} item(s) to cart!`);
+    // Add item to Redux cart without alerts
+    if (!product) return;
+    try {
+      dispatch(
+        addItem({
+          id: product.id,
+          title: product.name,
+          price: product.price,
+          image: product.image,
+          qty: quantity,
+        })
+      );
+      console.log(`Added ${quantity} of product ${product.id} to cart`);
+    } catch (err) {
+      console.error("Failed to add to cart", err);
+    }
   };
 
   const handleBuyNow = () => {
-    // TODO: Redirect to checkout
-    console.log(`Buying ${quantity} of product ${product.id}`);
-    alert(`🛒 Redirecting to checkout with ${quantity} item(s)...`);
+    // Navigate to checkout placeholder page
+    if (!product) return;
+    navigate("/checkout");
   };
 
   const handleImageError = () => {
@@ -343,7 +358,7 @@ const ProductDetails = () => {
 
   const toggleWishlist = () => {
     setIsWishlisted(!isWishlisted);
-    alert(isWishlisted ? "❌ Removed from wishlist" : "❤️ Added to wishlist");
+    // no alert on wishlist toggle per requirements
   };
 
   const handleApplyCoupon = () => {
@@ -632,9 +647,7 @@ const ProductDetails = () => {
                       type="number"
                       min="1"
                       value={quantity}
-                      onChange={(e) =>
-                        setQuantity(Math.max(1, parseInt(e.target.value) || 1))
-                      }
+                      readOnly
                       className="w-16 text-center outline-none text-lg font-bold bg-transparent"
                     />
                     <button

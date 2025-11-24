@@ -5,6 +5,7 @@ const NewArrivalsCarousel = ({ products }) => {
   const containerRef = useRef(null);
   const [pageCount, setPageCount] = useState(0);
   const [activePage, setActivePage] = useState(0);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -36,6 +37,27 @@ const NewArrivalsCarousel = ({ products }) => {
     };
   }, [products]);
 
+  // autoplay: advance to next page every 3s unless paused, with circular looping
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || pageCount <= 1) return;
+
+    let currentPage = activePage;
+
+    const interval = setInterval(() => {
+      if (paused) return;
+
+      // Circular loop: wrap around to 0 when reaching the end
+      currentPage = (currentPage + 1) % pageCount;
+      const left = Math.round(currentPage * el.clientWidth);
+
+      el.scrollTo({ left, behavior: "smooth" });
+      setActivePage(currentPage);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [pageCount, paused, activePage]);
+
   const goToPage = (pageIndex) => {
     const el = containerRef.current;
     if (!el) return;
@@ -58,7 +80,9 @@ const NewArrivalsCarousel = ({ products }) => {
                 aria-label={`Go to page ${idx + 1}`}
                 className={
                   "w-2 h-2 rounded-full transition-all duration-200 " +
-                  (isActive ? "bg-gray-800 ring-2 ring-gray-800" : "bg-gray-300")
+                  (isActive
+                    ? "bg-gray-800 ring-2 ring-gray-800"
+                    : "bg-gray-300")
                 }
               />
             );
@@ -69,6 +93,8 @@ const NewArrivalsCarousel = ({ products }) => {
       <div className="relative">
         <div
           ref={containerRef}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
           className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory px-2 py-2"
         >
           {products.map((p) => (
@@ -77,6 +103,7 @@ const NewArrivalsCarousel = ({ products }) => {
               className="snap-start flex-shrink-0 w-[220px] md:w-[240px] lg:w-[260px]"
             >
               <ProductCard
+                id={p.id}
                 image={p.image}
                 name={p.name}
                 price={p.price}
@@ -85,8 +112,6 @@ const NewArrivalsCarousel = ({ products }) => {
             </div>
           ))}
         </div>
-
-        
       </div>
     </section>
   );

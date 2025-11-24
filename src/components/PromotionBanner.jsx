@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import PromoImg from "../assets/PromoImg.png";
 
 const PromotionSection = () => {
@@ -80,14 +81,19 @@ const PromotionSection = () => {
                   {String(value).padStart(2, "0")}
                 </span>
               </div>
-              <span className="mt-1 text-xs uppercase text-black-700">{unit}</span>
+              <span className="mt-1 text-xs uppercase text-black-700">
+                {unit}
+              </span>
             </div>
           ))}
         </div>
 
-        <button className="bg-black w-[40%] text-white rounded-2xl  py-3 text-sm hover:bg-gray-900 transition">
+        <Link
+          to="/products"
+          className="inline-block text-center bg-black w-[40%] text-white rounded-2xl  py-3 text-sm hover:bg-gray-900 transition"
+        >
           Shop now
-        </button>
+        </Link>
       </div>
     </section>
   );
