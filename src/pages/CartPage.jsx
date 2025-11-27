@@ -12,6 +12,31 @@ import {
   clearCart,
 } from "../features/cart/cartSlice";
 
+import { coupones } from "../data/coupones";
+
+export function validateCoupon(code) {
+  const coupon = coupones.find(c => c.code === code.toUpperCase());
+
+  if (!coupon) return { valid: false, message: "Invalid coupon" };
+
+  if (new Date(coupon.expiresAt) < new Date())
+    return { valid: false, message: "Coupon expired" };
+
+  return { valid: true, coupon };
+}
+
+export function applyDiscount(total, coupon) {
+  if (coupon.discountType === "percentage") {
+    return total - (total * coupon.discountValue) / 100;
+  }
+
+  if (coupon.discountType === "fixed") {
+    return Math.max(0, total - coupon.discountValue);
+  }
+
+  return total;
+}
+
 const CartPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();

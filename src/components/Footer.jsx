@@ -46,7 +46,6 @@ export default function Footer() {
 
             <div className="flex gap-10 text-sm">
               <Link to="/">Home</Link>
-              <Link to="/products">Shop</Link>
               <Link to="/products">Product</Link>
               <Link to="/about">About</Link>
               <Link to="/contact">Contact Us</Link>
