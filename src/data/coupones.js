@@ -1,8 +1,8 @@
 export const coupones = [
   {
-    code: "SALE10",
+    code: "SALE100",
     discountType: "percentage",
-    discountValue: 10, // 10%
+    discountValue: 100, // 100%
     expiresAt: "2025-12-31"
   },
   {

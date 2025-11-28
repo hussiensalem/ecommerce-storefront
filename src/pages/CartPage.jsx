@@ -1,5 +1,5 @@
 // src/pages/CartPage.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
@@ -11,31 +11,12 @@ import {
   removeItem,
   clearCart,
 } from "../features/cart/cartSlice";
-
-import { coupones } from "../data/coupones";
-
-export function validateCoupon(code) {
-  const coupon = coupones.find(c => c.code === code.toUpperCase());
-
-  if (!coupon) return { valid: false, message: "Invalid coupon" };
-
-  if (new Date(coupon.expiresAt) < new Date())
-    return { valid: false, message: "Coupon expired" };
-
-  return { valid: true, coupon };
-}
-
-export function applyDiscount(total, coupon) {
-  if (coupon.discountType === "percentage") {
-    return total - (total * coupon.discountValue) / 100;
-  }
-
-  if (coupon.discountType === "fixed") {
-    return Math.max(0, total - coupon.discountValue);
-  }
-
-  return total;
-}
+import {
+  applyDiscount,
+  persistCoupon,
+  readPersistedCoupon,
+  validateCoupon,
+} from "../utils/coupons";
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -43,6 +24,35 @@ const CartPage = () => {
   const items = useAppSelector(selectCartItems);
   const totalItems = useAppSelector(selectCartTotalItems);
   const totalPrice = useAppSelector(selectCartTotalPrice);
+  const [couponInput, setCouponInput] = useState("");
+  const [couponMessage, setCouponMessage] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState(() => readPersistedCoupon());
+
+  useEffect(() => {
+    persistCoupon(appliedCoupon);
+  }, [appliedCoupon]);
+
+  const handleApplyCoupon = () => {
+    const result = validateCoupon(couponInput);
+    if (result.valid) {
+      setAppliedCoupon(result.coupon);
+      setCouponMessage(`✅ ${result.coupon.code} applied`);
+      setCouponInput("");
+    } else {
+      setAppliedCoupon(null);
+      setCouponMessage(`❌ ${result.message}`);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponMessage("Coupon removed");
+  };
+
+  const discountedTotal = appliedCoupon
+    ? applyDiscount(Number(totalPrice) || 0, appliedCoupon)
+    : Number(totalPrice) || 0;
+  const savings = Math.max(0, (Number(totalPrice) || 0) - discountedTotal);
 
   if (!items.length)
     return (
@@ -115,7 +125,51 @@ const CartPage = () => {
       </ul>
 
       <div className="mt-8 text-right text-xl font-semibold">
-        Total: ${(Number(totalPrice) || 0).toFixed(2)}
+        <div className="inline-flex flex-col items-end gap-1 w-full md:w-auto">
+          <span>Subtotal: ${(Number(totalPrice) || 0).toFixed(2)}</span>
+          {appliedCoupon && (
+            <span className="text-green-600 text-base font-medium">
+              Coupon ({appliedCoupon.code}): −${savings.toFixed(2)}
+            </span>
+          )}
+          <span className="text-2xl">Total: ${discountedTotal.toFixed(2)}</span>
+        </div>
+      </div>
+
+      <div className="mt-6 bg-gray-50 border rounded-lg p-4">
+        <h3 className="text-lg font-semibold mb-3">Have a coupon?</h3>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <input
+            type="text"
+            value={couponInput}
+            onChange={(e) => setCouponInput(e.target.value)}
+            placeholder="Enter coupon code"
+            className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900"
+          />
+          <button
+            onClick={handleApplyCoupon}
+            className="px-5 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition"
+          >
+            Apply
+          </button>
+          {appliedCoupon && (
+            <button
+              onClick={handleRemoveCoupon}
+              className="px-5 py-2 border border-red-500 text-red-500 rounded-lg hover:bg-red-50 transition"
+            >
+              Remove
+            </button>
+          )}
+        </div>
+        {couponMessage && (
+          <p
+            className={`mt-2 text-sm font-medium ${
+              couponMessage.startsWith("✅") ? "text-green-600" : "text-red-600"
+            }`}
+          >
+            {couponMessage}
+          </p>
+        )}
       </div>
 
       {/* Checkout Button */}
@@ -129,6 +183,7 @@ const CartPage = () => {
         <button
           onClick={() => navigate("/checkout")}
           className="px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition"
+          disabled={!items.length}
         >
           Proceed to Checkout
         </button>

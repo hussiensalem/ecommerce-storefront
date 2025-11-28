@@ -11,11 +11,14 @@ import Contact from "./pages/Contact";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Checkout from "./pages/Checkout";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <Router>
       <div className="min-h-screen flex flex-col">
+        {/* Ensure each new route starts at page top */}
+        <ScrollToTop />
         <Navbar />
         <main className="flex-1">
           <Routes>

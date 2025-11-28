@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FiChevronDown, FiCheck } from "react-icons/fi";
+import { useSearchParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import headphone1 from "../assets/headphone1.png";
 import headphone2 from "../assets/headphone2.png";
@@ -167,6 +168,7 @@ const products = [
   },
 ];
 export default function Shop() {
+  const [searchParams] = useSearchParams();
   const [category, setCategory] = useState("All");
   const [sort, setSort] = useState("default");
   const [priceRange, setPriceRange] = useState("all");
@@ -202,6 +204,22 @@ export default function Shop() {
   ];
   const currentSortLabel =
     sortOptions.find((o) => o.value === sort)?.label || "Default";
+
+  // Sync filters with URL query params (e.g., /products?category=Headphones)
+  useEffect(() => {
+    const urlCategory = searchParams.get("category");
+    if (urlCategory && categoryOptions.some((opt) => opt.value === urlCategory)) {
+      setCategory(urlCategory);
+    }
+    const urlPrice = searchParams.get("priceRange");
+    if (urlPrice && priceOptions.some((opt) => opt.value === urlPrice)) {
+      setPriceRange(urlPrice);
+    }
+    const urlSort = searchParams.get("sort");
+    if (urlSort && sortOptions.some((opt) => opt.value === urlSort)) {
+      setSort(urlSort);
+    }
+  }, [searchParams]);
 
   // Filter products by category
   const filteredProducts = products.filter((p) => {

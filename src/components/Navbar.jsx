@@ -10,6 +10,10 @@ function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showPromoBar, setShowPromoBar] = useState(() => {
+    if (typeof window === "undefined") return true;
+    return localStorage.getItem("promoBarDismissed") !== "true";
+  });
   const searchInputRef = useRef(null);
 
   const cartCount = useAppSelector(selectCartTotalItems);
@@ -19,6 +23,15 @@ function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (showPromoBar) {
+      localStorage.removeItem("promoBarDismissed");
+    } else {
+      localStorage.setItem("promoBarDismissed", "true");
+    }
+  }, [showPromoBar]);
 
   const handleSubmitSearch = (e) => {
     e.preventDefault();
@@ -33,12 +46,21 @@ function Navbar() {
           : "bg-[linear-gradient(to_right,#FEC04F,#FFCF69,#FFCB5D,#FEC95B,#FFCD62)]"
       }`}
     >
-      <div className="text-sm text-center py-2 bg-black text-white">
-        30% off storewide — Limited time!{" "}
-        <Link to="/products" className="underline cursor-pointer">
-          Shop Now
-        </Link>
-      </div>
+      {showPromoBar && (
+        <div className="text-sm text-center py-2 bg-black text-white flex items-center justify-center gap-3 px-4">
+          <span>30% off storewide — Limited time!</span>
+          <Link to="/products" className="underline cursor-pointer font-semibold">
+            Shop Now
+          </Link>
+          <button
+            aria-label="Hide limited time banner"
+            className="text-white/70 hover:text-white transition ml-2"
+            onClick={() => setShowPromoBar(false)}
+          >
+            <FiX />
+          </button>
+        </div>
+      )}
 
       <nav className="flex justify-between items-center px-6 md:px-16 py-5 overflow-x-hidden ">
         <div className="flex items-center gap-4">

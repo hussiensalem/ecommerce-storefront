@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import collheadphones from "../assets/collheadphones.png";
 import collearbuds from "../assets/collearbuds.png";
 import usb from "../assets/usb.png";
@@ -22,10 +23,12 @@ const ShopCollection = () => {
             <h3 className="text-4xl md:text-5xl font-semibold text-gray-900">
               Headband
             </h3>
-            <button className="underline text-gray-600 text-lg font-medium flex items-center gap-1 group-hover:gap-2 transition-all py-1 md:py-5
-            ">
+            <Link
+              to="/products?category=Headphones"
+              className="underline text-gray-600 text-lg font-medium flex items-center gap-1 group-hover:gap-2 transition-all py-1 md:py-5"
+            >
               Collection →
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -40,9 +43,12 @@ const ShopCollection = () => {
             <h3 className="text-3xl md:text-5xl font-semibold text-gray-900">
               Earbuds
             </h3>
-            <button className="underline text-gray-600 text-lg font-medium flex items-center gap-1 group-hover:gap-2 transition-all py-1 md:py-5">
+            <Link
+              to="/products?category=Earbuds"
+              className="underline text-gray-600 text-lg font-medium flex items-center gap-1 group-hover:gap-2 transition-all py-1 md:py-5"
+            >
               Collection →
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -57,9 +63,9 @@ const ShopCollection = () => {
             <h3 className="text-3xl md:text-5xl font-semibold text-gray-900">
               Accessories
             </h3>
-            <button className="underline text-gray-600 text-lg font-medium flex items-center gap-1 group-hover:gap-2 transition-all py-1 md:py-5">
-              Collection →
-            </button>
+            <p className="text-gray-600 text-base md:text-lg font-medium py-1 md:py-5 bg-white/60 inline-flex px-4 rounded-full">
+              Not available right now — coming soon!
+            </p>
           </div>
         </div>
       </div>

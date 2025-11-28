@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FiArrowLeft, FiHeart, FiShare2 } from "react-icons/fi";
 import { FiShoppingCart } from "react-icons/fi";
 import { useAppDispatch } from "../app/hooks";
-import { addItem } from "../features/cart/cartSlice";
+import { addItem, setCart } from "../features/cart/cartSlice";
+import { applyDiscount, validateCoupon } from "../utils/coupons";
 import headphone1 from "../assets/headphone1.png";
 import headphone2 from "../assets/headphone2.png";
 import headphone3 from "../assets/headphone3.png";
@@ -240,6 +241,7 @@ const ProductDetails = () => {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [comments, setComments] = useState([]);
   const [displayedComments, setDisplayedComments] = useState(3);
+  const [offerDeadline, setOfferDeadline] = useState(null);
   const [timeLeft, setTimeLeft] = useState(null);
   const [couponCode, setCouponCode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState(null);
@@ -270,7 +272,7 @@ const ProductDetails = () => {
           localStorage.setItem(storageKey, deadline);
         }
 
-        setTimeLeft(new Date(deadline));
+        setOfferDeadline(new Date(deadline));
 
         // Scroll to top when product page loads
         window.scrollTo(0, 0);
@@ -286,38 +288,28 @@ const ProductDetails = () => {
 
   // Countdown timer effect
   useEffect(() => {
-    if (!timeLeft) return;
+    if (!offerDeadline) return;
 
-    const interval = setInterval(() => {
+    const updateTimeLeft = () => {
       const now = new Date();
-      const diff = timeLeft - now;
+      const diff = offerDeadline - now;
 
       if (diff <= 0) {
-        setTimeLeft(null);
-        clearInterval(interval);
-      } else {
-        // Force re-render on each second for countdown
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, isEnded: true });
+        return;
       }
-    }, 1000);
 
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+      setTimeLeft({ days, hours, minutes, seconds, isEnded: false });
+    };
+
+    updateTimeLeft();
+    const interval = setInterval(updateTimeLeft, 1000);
     return () => clearInterval(interval);
-  }, [timeLeft]);
-
-  const getTimeLeft = () => {
-    if (!timeLeft) return null;
-    const now = new Date();
-    const diff = timeLeft - now;
-
-    if (diff <= 0)
-      return { days: 0, hours: 0, minutes: 0, seconds: 0, isEnded: true };
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-
-    return { days, hours, minutes, seconds, isEnded: false };
-  };
+  }, [offerDeadline]);
 
   const dispatch = useAppDispatch();
 
@@ -341,9 +333,27 @@ const ProductDetails = () => {
   };
 
   const handleBuyNow = () => {
-    // Navigate to checkout placeholder page
+    // Direct purchase flow: ensure the selected product and quantity are
+    // the only items in the cart, then go to checkout.
     if (!product) return;
-    navigate("/checkout");
+    try {
+      dispatch(
+        setCart({
+          items: [
+            {
+              id: product.id,
+              title: product.name,
+              price: product.price,
+              image: product.image,
+              qty: quantity,
+            },
+          ],
+        })
+      );
+      navigate("/checkout");
+    } catch (err) {
+      console.error("Failed to start buy-now checkout", err);
+    }
   };
 
   const handleImageError = () => {
@@ -362,28 +372,23 @@ const ProductDetails = () => {
   };
 
   const handleApplyCoupon = () => {
-    if (!couponCode.trim()) {
-      setCouponMessage("Please enter a coupon code");
-      return;
-    }
-
-    // Valid coupons for demo
-    const validCoupons = {
-      SAVE10: { discount: 10, message: "✅ 10% discount applied!" },
-      SAVE20: { discount: 20, message: "✅ 20% discount applied!" },
-      WELCOME: { discount: 15, message: "✅ 15% discount applied!" },
-    };
-
-    const coupon = validCoupons[couponCode.toUpperCase()];
-    if (coupon) {
-      setAppliedCoupon(coupon);
-      setCouponMessage(coupon.message);
+    const result = validateCoupon(couponCode);
+    if (result.valid) {
+      setAppliedCoupon(result.coupon);
+      setCouponMessage(`✅ ${result.coupon.code} applied`);
       setCouponCode("");
     } else {
-      setCouponMessage("❌ Invalid coupon code");
       setAppliedCoupon(null);
+      setCouponMessage(`❌ ${result.message}`);
     }
   };
+
+  const effectivePrice = useMemo(() => {
+    if (!product) return null;
+    const base = Number(product.price) || 0;
+    if (!appliedCoupon) return base;
+    return applyDiscount(base, appliedCoupon);
+  }, [appliedCoupon, product]);
 
   if (isLoading) {
     return (
@@ -438,7 +443,7 @@ const ProductDetails = () => {
             {/* Product Image */}
             <div>
               {/* Time Countdown Display - Minimal, No Box */}
-              {product.discount && timeLeft && !getTimeLeft()?.isEnded && (
+              {product.discount && timeLeft && !timeLeft.isEnded && (
                 <>
                   <p className="text-xs font-bold text-red-600 mb-2 flex items-center gap-1">
                     <span>⏱️</span> Offer Countdown
@@ -447,7 +452,7 @@ const ProductDetails = () => {
                     {/* Days */}
                     <div className="text-center">
                       <div className="text-white font-extrabold text-sm bg-red-600 rounded p-1 w-10">
-                        {String(getTimeLeft()?.days).padStart(2, "0")}
+                        {String(timeLeft.days).padStart(2, "0")}
                       </div>
                       <div className="text-gray-600 text-xs font-semibold mt-0.5">
                         Days
@@ -456,7 +461,7 @@ const ProductDetails = () => {
                     {/* Hours */}
                     <div className="text-center">
                       <div className="text-white font-extrabold text-sm bg-red-500 rounded p-1 w-10">
-                        {String(getTimeLeft()?.hours).padStart(2, "0")}
+                        {String(timeLeft.hours).padStart(2, "0")}
                       </div>
                       <div className="text-gray-600 text-xs font-semibold mt-0.5">
                         Hours
@@ -465,7 +470,7 @@ const ProductDetails = () => {
                     {/* Minutes */}
                     <div className="text-center">
                       <div className="text-white font-extrabold text-sm bg-red-500 rounded p-1 w-10">
-                        {String(getTimeLeft()?.minutes).padStart(2, "0")}
+                        {String(timeLeft.minutes).padStart(2, "0")}
                       </div>
                       <div className="text-gray-600 text-xs font-semibold mt-0.5">
                         Mins
@@ -474,7 +479,7 @@ const ProductDetails = () => {
                     {/* Seconds */}
                     <div className="text-center">
                       <div className="text-white font-extrabold text-sm bg-red-600 rounded p-1 w-10">
-                        {String(getTimeLeft()?.seconds).padStart(2, "0")}
+                        {String(timeLeft.seconds).padStart(2, "0")}
                       </div>
                       <div className="text-gray-600 text-xs font-semibold mt-0.5">
                         Secs
@@ -557,7 +562,7 @@ const ProductDetails = () => {
               <div className="mb-4 pb-4 border-b-2">
                 <div className="flex items-baseline gap-3">
                   <span className="text-3xl font-bold text-gray-900">
-                    ${product.price?.toFixed(2)}
+                    ${effectivePrice?.toFixed(2)}
                   </span>
                   {product.oldPrice && (
                     <span className="text-lg line-through text-gray-400">
@@ -693,7 +698,7 @@ const ProductDetails = () => {
                 )}
                 {appliedCoupon && (
                   <p className="text-xs text-blue-700 font-bold mt-2 bg-blue-100 p-2 rounded">
-                    ✨ {appliedCoupon.discount}% off!
+                    ✨ {appliedCoupon.code} active
                   </p>
                 )}
               </div>
