@@ -237,8 +237,8 @@ export default function Checkout() {
         </motion.div>
       )}
 
-      <div className="w-full max-w-3xl bg-white rounded-2xl shadow-xl p-8">
-        <h1 className="text-3xl font-bold mb-2 text-center">Checkout Form</h1>
+      <div className="w-full max-w-3xl bg-white rounded-2xl shadow-xl p-4 sm:p-8">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-center">Checkout Form</h1>
 
         <form
           onSubmit={handleSubmit}
@@ -317,10 +317,11 @@ export default function Checkout() {
             )}
           </div>
 
-          <div className="col-span-2 flex items-center justify-between mt-4">
+          <div className="col-span-2 flex items-center justify-center sm:justify-start mt-4">
             <button
               type="submit"
-              className="px-6 py-3 bg-black text-white rounded-xl hover:bg-gray-800"
+              className="w-full sm:w-auto px-6 py-3 bg-black text-white rounded-xl hover:bg-gray-800 active:bg-gray-700 transition touch-manipulation"
+              style={{ WebkitTapHighlightColor: 'transparent' }}
             >
               Submit Order
             </button>

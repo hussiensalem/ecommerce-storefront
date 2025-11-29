@@ -8,11 +8,11 @@ export default function Footer() {
     <>
       {/* Newsletter Section */}
       <section
-        className="w-full h-full py-20 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${newsletterBg})` }}
+        className="w-full h-full md:mt-10 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${newsletterBg})`, paddingTop: '10%'}}
       >
         <div className="max-w-7xl mx-auto px-4 flex flex-col items-center justify-center text-center text-black">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl items-center py-10">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               Join Our Newsletter
             </h2>
@@ -36,7 +36,7 @@ export default function Footer() {
       </section>
 
       {/* Footer */}
-      <footer className="w-full bg-black text-white py-14">
+      <footer className="w-full bg-black text-white py-14 -mt-px">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col lg:flex-row justify-between gap-10">
             <div>

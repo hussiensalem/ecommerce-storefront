@@ -1,3 +1,8 @@
+import headphone1 from "../assets/headphone1.png";
+import headphone2 from "../assets/headphone2.png";
+import headphone3 from "../assets/headphone3.png";
+import headphone4 from "../assets/headphone4.png";
+import earbuds1 from "../assets/earbuds1.png";
 
 const products = [
   {

@@ -33,8 +33,12 @@ const ProductCard = ({
   };
 
   const handleAddToCart = (e) => {
+    e.preventDefault();
     e.stopPropagation();
-    if (!id) return console.warn("Missing product id");
+    if (!id) {
+      console.warn("Missing product id");
+      return;
+    }
     const priceNum = parsePriceToNumber(price ?? priceLabel);
     dispatch(
       addItem({
@@ -55,11 +59,6 @@ const ProductCard = ({
       {isNew && (
         <span className="absolute top-2 left-2 bg-green-600 text-white px-2 py-0.5 rounded-full text-xs z-10">
           NEW
-        </span>
-      )}
-      {isHot && (
-        <span className="absolute top-2 right-2 bg-red-500 text-white px-2 py-0.5 rounded-full text-xs z-10">
-          HOT
         </span>
       )}
 
@@ -101,7 +100,11 @@ const ProductCard = ({
       {/* Fixed button - always at bottom */}
       <button
         onClick={handleAddToCart}
-        className="mt-2 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition flex-shrink-0"
+        onTouchStart={(e) => {
+          e.stopPropagation();
+        }}
+        className="mt-2 w-full bg-black text-white py-2.5 sm:py-2 rounded-lg hover:bg-gray-800 active:bg-gray-700 transition flex-shrink-0 touch-manipulation z-10 relative"
+        style={{ WebkitTapHighlightColor: 'transparent' }}
       >
         Add to Cart
       </button>

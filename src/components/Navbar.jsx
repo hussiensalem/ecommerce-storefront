@@ -192,7 +192,81 @@ function Navbar() {
         </>
       )}
 
-      {/* mobile menu (kept as in your original) */}
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-[40] bg-black/50 backdrop-blur-sm md:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <div className="fixed top-0 left-0 h-full w-64 bg-white shadow-2xl z-[50] md:hidden transform transition-transform duration-300 ease-in-out">
+            <div className="p-6 border-b">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold text-gray-900">Menu</h2>
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-gray-600 hover:text-gray-900"
+                >
+                  <FiX className="text-2xl" />
+                </button>
+              </div>
+              <nav className="flex flex-col gap-4">
+                <Link
+                  to="/"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-gray-700 hover:text-blue-600 transition font-medium py-2"
+                >
+                  Home
+                </Link>
+                <Link
+                  to="/products"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-gray-700 hover:text-blue-600 transition font-medium py-2"
+                >
+                  Products
+                </Link>
+                <Link
+                  to="/about"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-gray-700 hover:text-blue-600 transition font-medium py-2"
+                >
+                  About
+                </Link>
+                <Link
+                  to="/contact"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-gray-700 hover:text-blue-600 transition font-medium py-2"
+                >
+                  Contact
+                </Link>
+              </nav>
+            </div>
+            <div className="p-6 border-t mt-auto">
+              <Link
+                to="/signin"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition font-medium py-2 mb-4"
+              >
+                <FiUser />
+                <span>Sign In</span>
+              </Link>
+              <Link
+                to="/cart"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition font-medium py-2 relative"
+              >
+                <FiShoppingBag />
+                <span>Cart</span>
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 left-5 bg-red-600 text-white text-xs px-2 rounded-full">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+            </div>
+          </div>
+        </>
+      )}
     </header>
   );
 }

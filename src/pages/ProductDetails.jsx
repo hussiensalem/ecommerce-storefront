@@ -489,7 +489,7 @@ const ProductDetails = () => {
                 </>
               )}
 
-              <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 mb-6 border border-gray-200">
+              <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 mb-6 border border-gray-200">
                 <img
                   src={imageError ? fallbackImage : product.image}
                   alt={product.name}
@@ -498,7 +498,7 @@ const ProductDetails = () => {
                 />
 
                 {product.discount && (
-                  <div className="absolute top-6 right-6 bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-full font-bold text-2xl shadow-lg transform -rotate-3 hover:rotate-0 transition">
+                  <div className="absolute top-6 right-6 bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-full font-bold text-2xl shadow-lg transform -rotate-3 hover:rotate-0 transition z-10">
                     -{product.discount}%
                   </div>
                 )}
@@ -707,19 +707,21 @@ const ProductDetails = () => {
               <div className="flex flex-col sm:flex-row gap-3 mb-4">
                 <button
                   onClick={handleAddToCart}
-                  className="flex-1 px-4 py-3 bg-gradient-to-r from-gray-900 to-black text-white font-bold rounded-lg hover:from-gray-800 hover:to-gray-900 transition flex items-center justify-center gap-2 shadow-lg hover:shadow-xl text-sm"
+                  className="flex-1 px-4 py-3 bg-gradient-to-r from-gray-900 to-black text-white font-bold rounded-lg hover:from-gray-800 hover:to-gray-900 active:from-gray-700 active:to-gray-800 transition flex items-center justify-center gap-2 shadow-lg hover:shadow-xl text-sm touch-manipulation"
+                  style={{ WebkitTapHighlightColor: 'transparent' }}
                 >
                   <FiShoppingCart className="text-lg" />
                   <span>Add to Cart</span>
                 </button>
                 <button
                   onClick={toggleWishlist}
-                  className={`flex-1 px-4 py-3 rounded-lg font-bold transition text-sm shadow-md hover:shadow-lg flex items-center justify-center gap-2 ${
+                  className={`flex-1 px-4 py-3 rounded-lg font-bold transition text-sm shadow-md hover:shadow-lg active:opacity-80 flex items-center justify-center gap-2 touch-manipulation ${
                     isWishlisted
                       ? "bg-red-500 text-white border-2 border-red-500 hover:bg-red-600 hover:border-red-600"
                       : "border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
                   }`}
                   title="Add to Wishlist"
+                  style={{ WebkitTapHighlightColor: 'transparent' }}
                 >
                   <FiHeart
                     className="text-lg"
@@ -732,7 +734,8 @@ const ProductDetails = () => {
               {/* Buy Now Button */}
               <button
                 onClick={handleBuyNow}
-                className="w-full px-4 py-3 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-lg hover:from-orange-500 hover:to-orange-600 transition shadow-lg hover:shadow-xl text-sm mb-4"
+                className="w-full px-4 py-3 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-lg hover:from-orange-500 hover:to-orange-600 active:from-orange-600 active:to-orange-700 transition shadow-lg hover:shadow-xl text-sm mb-4 touch-manipulation"
+                style={{ WebkitTapHighlightColor: 'transparent' }}
               >
                 🛒 Buy Now
               </button>

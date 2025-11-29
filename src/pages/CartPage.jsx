@@ -78,38 +78,41 @@ const CartPage = () => {
         {items.map((it) => (
           <li
             key={it.id}
-            className="p-4 border rounded flex items-center justify-between"
+            className="p-4 border rounded flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
           >
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 flex-1 w-full sm:w-auto">
               <img
                 src={it.image}
                 alt={it.title}
-                className="w-20 h-20 object-cover rounded"
+                className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded flex-shrink-0"
               />
-              <div>
-                <h3 className="font-semibold">{it.title}</h3>
-                <p className="text-gray-600">
+              <div className="flex-1 min-w-0">
+                <h3 className="font-semibold text-sm sm:text-base truncate">{it.title}</h3>
+                <p className="text-gray-600 text-sm sm:text-base">
                   ${(Number(it.price) || 0).toFixed(2)}
                 </p>
 
-                <div className="flex items-center mt-2">
+                <div className="flex items-center mt-2 gap-2 flex-wrap">
                   <button
-                    className="px-3 py-1 border"
+                    className="px-3 py-1.5 border rounded hover:bg-gray-50 active:bg-gray-100 touch-manipulation text-base sm:text-sm"
                     onClick={() => dispatch(decreaseQty(it.id))}
+                    style={{ WebkitTapHighlightColor: 'transparent' }}
                   >
                     -
                   </button>
-                  <span className="px-4">{it.qty}</span>
+                  <span className="px-3 sm:px-4 text-base sm:text-sm font-medium">{it.qty}</span>
                   <button
-                    className="px-3 py-1 border"
+                    className="px-3 py-1.5 border rounded hover:bg-gray-50 active:bg-gray-100 touch-manipulation text-base sm:text-sm"
                     onClick={() => dispatch(increaseQty(it.id))}
+                    style={{ WebkitTapHighlightColor: 'transparent' }}
                   >
                     +
                   </button>
 
                   <button
-                    className="ml-4 text-red-600 hover:underline"
+                    className="ml-2 sm:ml-4 text-red-600 hover:underline text-sm sm:text-base touch-manipulation px-2 py-1"
                     onClick={() => dispatch(removeItem(it.id))}
+                    style={{ WebkitTapHighlightColor: 'transparent' }}
                   >
                     Remove
                   </button>
@@ -117,7 +120,7 @@ const CartPage = () => {
               </div>
             </div>
 
-            <div className="font-semibold text-lg">
+            <div className="font-semibold text-lg sm:text-xl self-end sm:self-auto">
               ${(Number(it.qty) * Number(it.price) || 0).toFixed(2)}
             </div>
           </li>
@@ -173,17 +176,19 @@ const CartPage = () => {
       </div>
 
       {/* Checkout Button */}
-      <div className="mt-8 flex justify-end gap-4">
+      <div className="mt-8 flex flex-col sm:flex-row justify-end gap-3 sm:gap-4">
         <button
           onClick={() => navigate("/products")}
-          className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition"
+          className="w-full sm:w-auto px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 active:bg-gray-100 transition touch-manipulation"
+          style={{ WebkitTapHighlightColor: 'transparent' }}
         >
           Continue Shopping
         </button>
         <button
           onClick={() => navigate("/checkout")}
-          className="px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition"
+          className="w-full sm:w-auto px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 active:bg-gray-700 transition touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={!items.length}
+          style={{ WebkitTapHighlightColor: 'transparent' }}
         >
           Proceed to Checkout
         </button>
