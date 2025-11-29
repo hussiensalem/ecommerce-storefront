@@ -33,9 +33,25 @@ function Navbar() {
     }
   }, [showPromoBar]);
 
+  // Close mobile menu when clicking outside or on link
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileMenuOpen]);
+
   const handleSubmitSearch = (e) => {
     e.preventDefault();
     setSearchOpen(false);
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
   };
 
   return (
@@ -62,14 +78,22 @@ function Navbar() {
         </div>
       )}
 
-      <nav className="flex justify-between items-center px-6 md:px-16 py-5 overflow-x-hidden ">
+      <nav className="flex justify-between items-center px-6 md:px-16 py-5 overflow-x-hidden">
         <div className="flex items-center gap-4">
           <div className="md:hidden flex items-center">
-            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            <button 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2"
+              aria-label="Toggle menu"
+            >
               {mobileMenuOpen ? (
-                <FiX className="text-2xl text-gray-900" />
+                <FiX className={`text-2xl transition ${
+                  navBg ? "text-gray-900" : "text-white"
+                }`} />
               ) : (
-                <FiMenu className="text-2xl text-gray-900" />
+                <FiMenu className={`text-2xl transition ${
+                  navBg ? "text-gray-900" : "text-white"
+                }`} />
               )}
             </button>
           </div>
@@ -83,6 +107,7 @@ function Navbar() {
           </h1>
         </div>
 
+        {/* Desktop Menu */}
         <ul
           className={`hidden md:flex gap-8 font-medium transition ${
             navBg ? "text-gray-800" : "text-white"
@@ -123,6 +148,23 @@ function Navbar() {
         </ul>
 
         <div className="flex items-center gap-4">
+          {/* Mobile Cart Icon */}
+          <Link 
+            to="/cart" 
+            className="md:hidden relative inline-flex items-center"
+            onClick={closeMobileMenu}
+          >
+            <FiShoppingBag className={`text-xl cursor-pointer hover:text-blue-600 transition ${
+              navBg ? "text-gray-800" : "text-white"
+            }`} />
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-3 bg-red-600 text-white text-xs px-2 rounded-full min-w-[20px] text-center">
+                {cartCount}
+              </span>
+            )}
+          </Link>
+
+          {/* Desktop Icons */}
           <div
             className={`hidden md:flex gap-6 text-xl transition items-center ${
               navBg ? "text-gray-800" : "text-white"
@@ -152,7 +194,7 @@ function Navbar() {
             <Link to="/cart" className="relative inline-flex items-center">
               <FiShoppingBag className="text-xl cursor-pointer hover:text-blue-600 transition" />
               {cartCount > 0 && (
-                <span className="absolute -top-2 -right-3 bg-red-600 text-white text-xs px-2 rounded-full">
+                <span className="absolute -top-2 -right-3 bg-red-600 text-white text-xs px-2 rounded-full min-w-[20px] text-center">
                   {cartCount}
                 </span>
               )}
@@ -161,6 +203,118 @@ function Navbar() {
         </div>
       </nav>
 
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/50 z-40 md:hidden"
+            onClick={closeMobileMenu}
+          />
+          
+          {/* Mobile Menu */}
+          <div
+            className={`fixed top-0 left-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
+              mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
+          >
+            <div className="flex flex-col h-full">
+              {/* Menu Header */}
+              <div className="flex items-center justify-between p-6 border-b">
+                <h2 className="text-xl font-bold text-gray-900">Menu</h2>
+                <button
+                  onClick={closeMobileMenu}
+                  className="p-2 hover:bg-gray-100 rounded-full transition"
+                  aria-label="Close menu"
+                >
+                  <FiX className="text-2xl text-gray-900" />
+                </button>
+              </div>
+
+              {/* Menu Links */}
+              <nav className="flex-1 overflow-y-auto py-6">
+                <ul className="space-y-1 px-4">
+                  <li>
+                    <Link
+                      to="/"
+                      onClick={closeMobileMenu}
+                      className="block px-4 py-3 text-gray-900 hover:bg-gray-100 rounded-lg transition font-medium"
+                    >
+                      Home
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/products"
+                      onClick={closeMobileMenu}
+                      className="block px-4 py-3 text-gray-900 hover:bg-gray-100 rounded-lg transition font-medium"
+                    >
+                      Products
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/about"
+                      onClick={closeMobileMenu}
+                      className="block px-4 py-3 text-gray-900 hover:bg-gray-100 rounded-lg transition font-medium"
+                    >
+                      About
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/contact"
+                      onClick={closeMobileMenu}
+                      className="block px-4 py-3 text-gray-900 hover:bg-gray-100 rounded-lg transition font-medium"
+                    >
+                      Contact
+                    </Link>
+                  </li>
+                </ul>
+              </nav>
+
+              {/* Menu Footer with Actions */}
+              <div className="border-t p-6 space-y-4">
+                <button
+                  onClick={() => {
+                    setSearchOpen(true);
+                    closeMobileMenu();
+                  }}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition font-medium text-gray-900"
+                >
+                  <FiSearch className="text-xl" />
+                  <span>Search</span>
+                </button>
+                
+                <Link
+                  to="/signin"
+                  onClick={closeMobileMenu}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-gray-300 hover:bg-gray-50 rounded-lg transition font-medium text-gray-900"
+                >
+                  <FiUser className="text-xl" />
+                  <span>Sign In</span>
+                </Link>
+
+                <Link
+                  to="/cart"
+                  onClick={closeMobileMenu}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-black text-white hover:bg-gray-800 rounded-lg transition font-medium relative"
+                >
+                  <FiShoppingBag className="text-xl" />
+                  <span>Cart</span>
+                  {cartCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-2 rounded-full min-w-[24px] text-center">
+                      {cartCount}
+                    </span>
+                  )}
+                </Link>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Search Modal */}
       {searchOpen && (
         <>
           <div
@@ -191,8 +345,6 @@ function Navbar() {
           </div>
         </>
       )}
-
-      {/* mobile menu (kept as in your original) */}
     </header>
   );
 }

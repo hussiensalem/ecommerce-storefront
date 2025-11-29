@@ -1,8 +1,9 @@
-// src/components/ProductCard.jsx
+ // src/components/ProductCard.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../app/hooks";
 import { addItem } from "../features/cart/cartSlice";
+import { FiShoppingCart } from "react-icons/fi";
 
 const ProductCard = ({
   id,
@@ -101,9 +102,11 @@ const ProductCard = ({
       {/* Fixed button - always at bottom */}
       <button
         onClick={handleAddToCart}
-        className="mt-2 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition flex-shrink-0"
+        className="mt-2 w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition flex-shrink-0 flex items-center justify-center gap-2 text-sm font-semibold"
       >
-        Add to Cart
+        <FiShoppingCart className="text-base" />
+        <span className="hidden sm:inline">Add to Cart</span>
+        <span className="sm:hidden">Add</span>
       </button>
     </div>
   );

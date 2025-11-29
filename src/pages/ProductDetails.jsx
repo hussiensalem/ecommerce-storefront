@@ -707,14 +707,14 @@ const ProductDetails = () => {
               <div className="flex flex-col sm:flex-row gap-3 mb-4">
                 <button
                   onClick={handleAddToCart}
-                  className="flex-1 px-4 py-3 bg-gradient-to-r from-gray-900 to-black text-white font-bold rounded-lg hover:from-gray-800 hover:to-gray-900 transition flex items-center justify-center gap-2 shadow-lg hover:shadow-xl text-sm"
+                  className="flex-1 px-4 py-3 bg-gradient-to-r from-gray-900 to-black text-white font-bold rounded-lg hover:from-gray-800 hover:to-gray-900 transition flex items-center justify-center gap-2 shadow-lg hover:shadow-xl text-sm sm:text-base"
                 >
-                  <FiShoppingCart className="text-lg" />
+                  <FiShoppingCart className="text-lg sm:text-xl" />
                   <span>Add to Cart</span>
                 </button>
                 <button
                   onClick={toggleWishlist}
-                  className={`flex-1 px-4 py-3 rounded-lg font-bold transition text-sm shadow-md hover:shadow-lg flex items-center justify-center gap-2 ${
+                  className={`flex-1 px-4 py-3 rounded-lg font-bold transition text-sm sm:text-base shadow-md hover:shadow-lg flex items-center justify-center gap-2 ${
                     isWishlisted
                       ? "bg-red-500 text-white border-2 border-red-500 hover:bg-red-600 hover:border-red-600"
                       : "border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
@@ -722,7 +722,7 @@ const ProductDetails = () => {
                   title="Add to Wishlist"
                 >
                   <FiHeart
-                    className="text-lg"
+                    className="text-lg sm:text-xl"
                     fill={isWishlisted ? "currentColor" : "none"}
                   />
                   <span>Wishlist</span>
@@ -732,9 +732,10 @@ const ProductDetails = () => {
               {/* Buy Now Button */}
               <button
                 onClick={handleBuyNow}
-                className="w-full px-4 py-3 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-lg hover:from-orange-500 hover:to-orange-600 transition shadow-lg hover:shadow-xl text-sm mb-4"
+                className="w-full px-4 py-3 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-lg hover:from-orange-500 hover:to-orange-600 transition shadow-lg hover:shadow-xl text-sm sm:text-base mb-4 flex items-center justify-center gap-2"
               >
-                🛒 Buy Now
+                <FiShoppingCart className="text-lg sm:text-xl" />
+                <span>Buy Now</span>
               </button>
 
               {/* Share */}

@@ -5,22 +5,12 @@ import heroMobile from "../assets/hero-mobile.png";
 
 function Hero() {
   return (
-    <section className="relative w-full min-h-[70vh] md:h-[calc(100vh-80px)] flex items-start md:items-center justify-center md:justify-end px-4 sm:px-8 md:px-20 pt-24 md:pt-[110px] bg-no-repeat bg-center md:bg-right bg-cover overflow-hidden">
+    <section className="relative w-full min-h-[70vh] md:h-[calc(100vh-80px)] flex flex-col md:flex-row items-start md:items-center justify-center md:justify-end px-4 sm:px-8 md:px-20 pt-24 md:pt-[110px] bg-no-repeat bg-center md:bg-right bg-cover overflow-hidden">
       {/* Desktop background (md+) */}
       <div
         className="absolute inset-0 hidden md:block bg-no-repeat bg-cover bg-right"
         style={{ backgroundImage: `url(${heroImage})` }}
       />
-
-      {/* Mobile background image */}
-      <img
-        src={heroMobile}
-        alt="Hero mobile"
-        className="absolute inset-0 w-full h-full object-cover object-[60%_center] md:hidden"
-        style={{ zIndex: 0 }}
-      />
-      {/* subtle dark overlay on mobile so text stays readable */}
-      <div className="absolute inset-0 bg-black/10 md:bg-transparent" />
 
       <div className="relative z-10 text-gray-900 max-w-[320px] sm:max-w-xl md:max-w-xl lg:max-w-2xl xl:max-w-3xl md:mr-16 pt-6 sm:pt-10 text-center md:text-left mx-auto md:mb-20">
         <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-tight drop-shadow-sm">
@@ -39,6 +29,15 @@ function Hero() {
         >
           Shopping Now
         </Link>
+      </div>
+
+      {/* Mobile image - appears below Shopping Now button, behind the text */}
+      <div className="relative w-full flex justify-center md:hidden -mt-96 mb-4 z-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${heroMobile})` }}>
+        <img
+          src={heroMobile}
+          alt="Hero mobile"
+          className="w-full max-w-md h-auto object-contain"
+        />
       </div>
     </section>
   );
