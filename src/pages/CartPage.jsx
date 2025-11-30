@@ -1,6 +1,6 @@
 // src/pages/CartPage.jsx
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
   selectCartItems,
@@ -10,6 +10,7 @@ import {
   decreaseQty,
   removeItem,
   clearCart,
+  setCart,
 } from "../features/cart/cartSlice";
 import {
   applyDiscount,
@@ -30,7 +31,24 @@ const CartPage = () => {
 
   useEffect(() => {
     persistCoupon(appliedCoupon);
-  }, [appliedCoupon]);
+    
+    // Restore saved cart if user comes back to cart page after "Buy Now"
+    const savedCart = localStorage.getItem('savedCartBeforeBuyNow');
+    if (savedCart) {
+      try {
+        const parsedCart = JSON.parse(savedCart);
+        if (parsedCart && parsedCart.length > 0) {
+          // Restore the original cart
+          dispatch(setCart({ items: parsedCart }));
+          // Clear the saved cart from localStorage
+          localStorage.removeItem('savedCartBeforeBuyNow');
+        }
+      } catch (e) {
+        console.error("Failed to restore saved cart", e);
+        localStorage.removeItem('savedCartBeforeBuyNow');
+      }
+    }
+  }, [appliedCoupon, dispatch]);
 
   const handleApplyCoupon = () => {
     const result = validateCoupon(couponInput);
@@ -81,13 +99,20 @@ const CartPage = () => {
             className="p-4 border rounded flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
           >
             <div className="flex items-center gap-4 flex-1 w-full sm:w-auto">
-              <img
-                src={it.image}
-                alt={it.title}
-                className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded flex-shrink-0"
-              />
+              <Link to={`/products/${it.id}`} className="flex-shrink-0">
+                <img
+                  src={it.image}
+                  alt={it.title}
+                  className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded cursor-pointer hover:opacity-80 transition"
+                />
+              </Link>
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-sm sm:text-base truncate">{it.title}</h3>
+                <Link 
+                  to={`/products/${it.id}`}
+                  className="font-semibold text-sm sm:text-base truncate block hover:text-blue-600 transition cursor-pointer"
+                >
+                  {it.title}
+                </Link>
                 <p className="text-gray-600 text-sm sm:text-base">
                   ${(Number(it.price) || 0).toFixed(2)}
                 </p>

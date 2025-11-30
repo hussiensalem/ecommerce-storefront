@@ -123,6 +123,22 @@ function Navbar() {
         </ul>
 
         <div className="flex items-center gap-4">
+          {/* Cart icon - visible on all screens, positioned in top right */}
+          <Link 
+            to="/cart" 
+            className={`relative inline-flex items-center text-xl transition ${
+              navBg ? "text-gray-800" : "text-white"
+            }`}
+          >
+            <FiShoppingBag className="cursor-pointer hover:text-blue-600 transition" />
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-3 bg-red-600 text-white text-xs px-2 rounded-full">
+                {cartCount}
+              </span>
+            )}
+          </Link>
+
+          {/* Desktop only: Search and Sign In */}
           <div
             className={`hidden md:flex gap-6 text-xl transition items-center ${
               navBg ? "text-gray-800" : "text-white"
@@ -147,15 +163,6 @@ function Navbar() {
               >
                 Sign In
               </span>
-            </Link>
-
-            <Link to="/cart" className="relative inline-flex items-center">
-              <FiShoppingBag className="text-xl cursor-pointer hover:text-blue-600 transition" />
-              {cartCount > 0 && (
-                <span className="absolute -top-2 -right-3 bg-red-600 text-white text-xs px-2 rounded-full">
-                  {cartCount}
-                </span>
-              )}
             </Link>
           </div>
         </div>
@@ -245,23 +252,10 @@ function Navbar() {
               <Link
                 to="/signin"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition font-medium py-2 mb-4"
+                className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition font-medium py-2"
               >
                 <FiUser />
                 <span>Sign In</span>
-              </Link>
-              <Link
-                to="/cart"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition font-medium py-2 relative"
-              >
-                <FiShoppingBag />
-                <span>Cart</span>
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 left-5 bg-red-600 text-white text-xs px-2 rounded-full">
-                    {cartCount}
-                  </span>
-                )}
               </Link>
             </div>
           </div>

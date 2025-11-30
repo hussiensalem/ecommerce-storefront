@@ -2,9 +2,9 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FiArrowLeft, FiHeart, FiShare2 } from "react-icons/fi";
 import { FiShoppingCart } from "react-icons/fi";
-import { useAppDispatch } from "../app/hooks";
-import { addItem, setCart } from "../features/cart/cartSlice";
-import { applyDiscount, validateCoupon } from "../utils/coupons";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { addItem, setCart, selectCartItems } from "../features/cart/cartSlice";
+import { applyDiscount, validateCoupon, persistCoupon } from "../utils/coupons";
 import headphone1 from "../assets/headphone1.png";
 import headphone2 from "../assets/headphone2.png";
 import headphone3 from "../assets/headphone3.png";
@@ -312,6 +312,7 @@ const ProductDetails = () => {
   }, [offerDeadline]);
 
   const dispatch = useAppDispatch();
+  const currentCartItems = useAppSelector(selectCartItems);
 
   const handleAddToCart = () => {
     // Add item to Redux cart without alerts
@@ -333,10 +334,38 @@ const ProductDetails = () => {
   };
 
   const handleBuyNow = () => {
-    // Direct purchase flow: ensure the selected product and quantity are
-    // the only items in the cart, then go to checkout.
+    // Save current cart before replacing it, then go to checkout with single product
     if (!product) return;
     try {
+      // Save current cart to localStorage if it has items
+      if (currentCartItems.length > 0) {
+        localStorage.setItem('savedCartBeforeBuyNow', JSON.stringify(currentCartItems));
+      }
+      
+      // If coupon code is entered but not yet applied, validate and apply it
+      let couponToPersist = appliedCoupon;
+      if (couponCode.trim() && !appliedCoupon) {
+        const result = validateCoupon(couponCode.trim());
+        if (result.valid) {
+          couponToPersist = result.coupon;
+          setAppliedCoupon(result.coupon);
+          setCouponMessage(`✅ ${result.coupon.code} applied`);
+        } else {
+          // Show error but don't block the purchase
+          setCouponMessage(`❌ ${result.message}`);
+          couponToPersist = null;
+        }
+      }
+      
+      // Persist coupon if one exists
+      if (couponToPersist) {
+        persistCoupon(couponToPersist);
+      } else {
+        // Clear any previously applied coupon
+        persistCoupon(null);
+      }
+      
+      // Replace cart with single product for checkout
       dispatch(
         setCart({
           items: [
