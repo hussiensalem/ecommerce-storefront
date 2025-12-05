@@ -2,14 +2,23 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FiArrowLeft, FiHeart, FiShare2 } from "react-icons/fi";
 import { FiShoppingCart } from "react-icons/fi";
-import { useAppDispatch } from "../app/hooks";
-import { addItem, setCart } from "../features/cart/cartSlice";
-import { applyDiscount, validateCoupon } from "../utils/coupons";
-import headphone1 from "../assets/headphone1.png";
-import headphone2 from "../assets/headphone2.png";
-import headphone3 from "../assets/headphone3.png";
-import headphone4 from "../assets/headphone4.png";
-import earbuds1 from "../assets/earbuds1.png";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { addItem, setCart, selectCartItems } from "../features/cart/cartSlice";
+import { applyDiscount, validateCoupon, persistCoupon } from "../utils/coupons";
+import headphone1 from "../assets/Headphones1.png";
+import headphone2 from "../assets/Headphones2.png";
+import headphone3 from "../assets/Headphones3.png";
+import headphone4 from "../assets/Headphones4.png";
+import headphone5 from "../assets/Headphones5.png";
+import headphone6 from "../assets/Headphones6.png";
+import headphone7 from "../assets/Headphones7.png";
+import earbuds1 from "../assets/Earbuds1.png";
+import earbuds2 from "../assets/Earbuds2.png";
+import earbuds3 from "../assets/Earbuds3.png";
+import earbuds4 from "../assets/Earbuds4.png";
+import earbuds5 from "../assets/Earbuds5.png";
+import earbuds6 from "../assets/Earbuds6.png";
+import earbuds7 from "../assets/Earbuds7.png";
 
 // Local product database that matches shop.jsx
 const PRODUCTS_DB = [
@@ -23,7 +32,7 @@ const PRODUCTS_DB = [
     discount: 25,
     category: "Headphones",
     description:
-      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
+      "Premium wireless headphones with industry-leading noise cancellation technology. Features 30-hour battery life, quick charge, and exceptional sound quality for music lovers and professionals.",
     rating: 4.5,
     colors: ["Black", "Silver", "Navy Blue"],
   },
@@ -37,7 +46,7 @@ const PRODUCTS_DB = [
     discount: 22,
     category: "Headphones",
     description:
-      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
+      "Professional-grade studio headphones with active noise cancellation. Delivers powerful bass, crystal-clear highs, and premium comfort for extended listening sessions.",
     rating: 4.3,
     colors: ["Black", "Red", "Gold"],
   },
@@ -51,146 +60,174 @@ const PRODUCTS_DB = [
     discount: 25,
     category: "Headphones",
     description:
-      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
+      "Affordable wireless headphones with excellent noise cancellation. Perfect balance of quality and value with 35-hour battery life and comfortable lightweight design.",
     rating: 4.4,
     colors: ["Black", "White", "Gray"],
   },
   {
     id: 4,
     name: "Skullcandy - Rail True Wireless Earbuds",
-    image: headphone4,
+    image: earbuds1,
     price: 79.99,
     oldPrice: 99.99,
     isNew: false,
     discount: 20,
     category: "Earbuds",
     description:
-      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
+      "Compact true wireless earbuds with secure fit design. Features 6-hour battery life, IPX4 water resistance, and rich bass for active lifestyles and daily commutes.",
     rating: 4.2,
     colors: ["Black", "White", "Purple"],
   },
   {
     id: 5,
     name: "Beats Studio Pro (Limited)",
-    image: earbuds1,
+    image: earbuds2,
     price: 249.99,
     oldPrice: 299.99,
     isNew: true,
     discount: 17,
     category: "Earbuds",
     description:
-      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
+      "Limited edition premium earbuds with active noise cancellation and spatial audio. Delivers studio-quality sound with 8-hour battery and wireless charging case.",
     rating: 4.6,
     colors: ["Black", "White", "Blue"],
   },
   {
     id: 6,
     name: "Sony - WH-1000XM5 Wireless Noise Canceling",
-    image: headphone1,
+    image: headphone4,
     price: 299.99,
     oldPrice: 399.99,
     isNew: true,
     discount: 25,
     category: "Headphones",
     description:
-      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
+      "Top-tier wireless headphones featuring advanced noise cancellation and Hi-Res audio support. Perfect for audiophiles seeking premium sound quality and comfort.",
     rating: 4.5,
     colors: ["Black", "Silver", "Navy Blue"],
   },
   {
     id: 7,
     name: "Beats Studio Pro",
-    image: headphone2,
+    image: headphone5,
     price: 349.99,
     oldPrice: 449.99,
     isNew: false,
     discount: 22,
     category: "Headphones",
     description:
-      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
+      "High-performance studio headphones with adaptive noise cancellation. Engineered for music production and critical listening with exceptional clarity and depth.",
     rating: 4.3,
     colors: ["Black", "Red", "Gold"],
   },
   {
     id: 8,
     name: "Sony - WH-CH720N Wireless Noise Canceling",
-    image: headphone3,
+    image: headphone6,
     price: 149.99,
     oldPrice: 199.99,
     isNew: true,
     discount: 25,
     category: "Headphones",
     description:
-      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
+      "Budget-friendly wireless headphones with impressive noise cancellation. Great for students and professionals who want quality sound without breaking the bank.",
     rating: 4.4,
     colors: ["Black", "White", "Gray"],
   },
   {
     id: 9,
     name: "Skullcandy - Rail True Wireless Earbuds",
-    image: headphone4,
+    image: earbuds3,
     price: 79.99,
     oldPrice: 99.99,
     isNew: false,
     discount: 20,
     category: "Earbuds",
     description:
-      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
+      "Sport-focused wireless earbuds with secure ear hooks. Ideal for workouts with sweat resistance, long battery life, and powerful bass for motivation.",
     rating: 4.2,
     colors: ["Black", "White", "Purple"],
   },
   {
     id: 10,
     name: "Beats Studio Pro (Limited)",
-    image: earbuds1,
+    image: earbuds4,
     price: 249.99,
     oldPrice: 299.99,
     isNew: true,
     discount: 17,
     category: "Earbuds",
     description:
-      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
+      "Exclusive limited edition earbuds with premium materials and signature Beats sound. Features transparency mode and seamless device switching.",
     rating: 4.6,
     colors: ["Black", "White", "Blue"],
   },
   {
     id: 11,
     name: "Beats Studio Pro",
-    image: headphone2,
+    image: headphone7,
     price: 349.99,
     oldPrice: 449.99,
     isNew: false,
     discount: 22,
     category: "Headphones",
     description:
-      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
+      "Professional studio headphones with dual-mode ANC. Designed for mixing and mastering with flat frequency response and exceptional build quality.",
     rating: 4.3,
   },
   {
     id: 12,
     name: "Sony - WH-CH720N Wireless Noise Canceling",
-    image: headphone3,
+    image: headphone1,
     price: 149.99,
     oldPrice: 199.99,
     isNew: true,
     discount: 25,
     category: "Headphones",
     description:
-      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
+      "Entry-level wireless headphones with Sony's signature sound. Features quick attention mode and multipoint pairing for versatile daily use.",
     rating: 4.4,
   },
   {
     id: 13,
     name: "Skullcandy - Rail True Wireless Earbuds",
-    image: headphone4,
+    image: earbuds5,
     price: 79.99,
     oldPrice: 99.99,
     isNew: false,
     discount: 20,
     category: "Earbuds",
     description:
-      "Industry-leading noise cancelation, up to 30 hours of battery life, comfortable over-ear design.",
+      "Affordable true wireless earbuds with reliable connectivity. Perfect for casual listening with touch controls and compact charging case.",
     rating: 4.2,
+  },
+  {
+    id: 14,
+    name: "Sony - WH-1000XM5 Wireless Noise Canceling",
+    image: headphone2,
+    price: 299.99,
+    oldPrice: 399.99,
+    isNew: true,
+    discount: 25,
+    category: "Headphones",
+    description:
+      "Flagship wireless headphones with V1 processor for superior noise cancellation. Includes speak-to-chat technology and premium leather ear cups.",
+    rating: 4.5,
+    colors: ["Black", "Silver", "Navy Blue"],
+  },
+  {
+    id: 15,
+    name: "Beats Studio Pro (Limited)",
+    image: earbuds6,
+    price: 249.99,
+    oldPrice: 299.99,
+    isNew: true,
+    discount: 17,
+    category: "Earbuds",
+    description:
+      "Special edition premium earbuds with custom tuning. Features Apple H1 chip for seamless integration and personalized spatial audio experience.",
+    rating: 4.6,
+    colors: ["Black", "White", "Blue"],
   },
 ];
 
@@ -247,7 +284,6 @@ const ProductDetails = () => {
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [couponMessage, setCouponMessage] = useState("");
   const [showComments, setShowComments] = useState(false);
-  const [selectedColor, setSelectedColor] = useState("");
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -312,6 +348,7 @@ const ProductDetails = () => {
   }, [offerDeadline]);
 
   const dispatch = useAppDispatch();
+  const currentCartItems = useAppSelector(selectCartItems);
 
   const handleAddToCart = () => {
     // Add item to Redux cart without alerts
@@ -333,10 +370,38 @@ const ProductDetails = () => {
   };
 
   const handleBuyNow = () => {
-    // Direct purchase flow: ensure the selected product and quantity are
-    // the only items in the cart, then go to checkout.
+    // Save current cart before replacing it, then go to checkout with single product
     if (!product) return;
     try {
+      // Save current cart to localStorage if it has items
+      if (currentCartItems.length > 0) {
+        localStorage.setItem('savedCartBeforeBuyNow', JSON.stringify(currentCartItems));
+      }
+      
+      // If coupon code is entered but not yet applied, validate and apply it
+      let couponToPersist = appliedCoupon;
+      if (couponCode.trim() && !appliedCoupon) {
+        const result = validateCoupon(couponCode.trim());
+        if (result.valid) {
+          couponToPersist = result.coupon;
+          setAppliedCoupon(result.coupon);
+          setCouponMessage(`✅ ${result.coupon.code} applied`);
+        } else {
+          // Show error but don't block the purchase
+          setCouponMessage(`❌ ${result.message}`);
+          couponToPersist = null;
+        }
+      }
+      
+      // Persist coupon if one exists
+      if (couponToPersist) {
+        persistCoupon(couponToPersist);
+      } else {
+        // Clear any previously applied coupon
+        persistCoupon(null);
+      }
+      
+      // Replace cart with single product for checkout
       dispatch(
         setCart({
           items: [
@@ -489,7 +554,7 @@ const ProductDetails = () => {
                 </>
               )}
 
-              <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 mb-6 border border-gray-200">
+              <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 mb-6 border border-gray-200">
                 <img
                   src={imageError ? fallbackImage : product.image}
                   alt={product.name}
@@ -498,7 +563,7 @@ const ProductDetails = () => {
                 />
 
                 {product.discount && (
-                  <div className="absolute top-6 right-6 bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-full font-bold text-2xl shadow-lg transform -rotate-3 hover:rotate-0 transition">
+                  <div className="absolute top-6 right-6 bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-3 rounded-full font-bold text-2xl shadow-lg transform -rotate-3 hover:rotate-0 transition z-10">
                     -{product.discount}%
                   </div>
                 )}
@@ -506,11 +571,11 @@ const ProductDetails = () => {
 
               {/* Image Gallery - showing main image for now */}
               <div className="flex gap-3">
-                <div className="w-20 h-20 bg-gray-200 rounded-xl cursor-pointer hover:bg-gray-300 transition flex items-center justify-center border-2 border-gray-300 hover:border-gray-400">
+                <div className="w-20 h-20 bg-gray-200 rounded-xl cursor-pointer hover:bg-gray-300 transition flex items-center justify-center border-2 border-gray-300 hover:border-gray-400 overflow-hidden">
                   <img
                     src={imageError ? fallbackImage : product.image}
                     alt="thumb"
-                    className="w-full h-full object-cover rounded-lg"
+                    className="w-full h-full object-cover"
                   />
                 </div>
               </div>
@@ -588,54 +653,6 @@ const ProductDetails = () => {
               <p className="text-gray-700 text-sm leading-relaxed mb-6">
                 {product.description}
               </p>
-
-              {/* Color Selection & Quantity - Side by Side */}
-              <div className="grid grid-cols-2 gap-6 mb-6">
-                {/* Color Selection */}
-                {product.colors && product.colors.length > 0 && (
-                  <div>
-                    <label className="block text-sm font-bold text-gray-800 mb-2">
-                      🎨 Color
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {product.colors.map((color) => {
-                        const colorBg =
-                          {
-                            Black: "bg-black",
-                            White: "bg-white border-2 border-gray-300",
-                            Silver: "bg-gray-300",
-                            "Navy Blue": "bg-blue-900",
-                            Red: "bg-red-600",
-                            Gold: "bg-yellow-500",
-                            Gray: "bg-gray-500",
-                            Purple: "bg-purple-600",
-                            Blue: "bg-blue-600",
-                          }[color] || "bg-gray-400";
-
-                        return (
-                          <button
-                            key={color}
-                            onClick={() => setSelectedColor(color)}
-                            className={`px-3 py-2 rounded-lg font-semibold text-xs transition transform hover:scale-105 ${
-                              selectedColor === color
-                                ? "ring-2 ring-offset-1 ring-gray-800 shadow-md"
-                                : "shadow-sm hover:shadow-md"
-                            }`}
-                            title={color}
-                          >
-                            <div
-                              className={`w-4 h-4 rounded ${colorBg} mx-auto mb-1`}
-                            ></div>
-                            <span className="text-gray-700 text-xs">
-                              {color}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-
                 {/* Quantity Selector */}
                 <div>
                   <label className="block text-sm font-bold text-gray-800 mb-2">
@@ -707,22 +724,24 @@ const ProductDetails = () => {
               <div className="flex flex-col sm:flex-row gap-3 mb-4">
                 <button
                   onClick={handleAddToCart}
-                  className="flex-1 px-4 py-3 bg-gradient-to-r from-gray-900 to-black text-white font-bold rounded-lg hover:from-gray-800 hover:to-gray-900 transition flex items-center justify-center gap-2 shadow-lg hover:shadow-xl text-sm sm:text-base"
+                  className="flex-1 px-4 py-3 bg-gradient-to-r from-gray-900 to-black text-white font-bold rounded-lg hover:from-gray-800 hover:to-gray-900 active:from-gray-700 active:to-gray-800 transition flex items-center justify-center gap-2 shadow-lg hover:shadow-xl text-sm touch-manipulation"
+                  style={{ WebkitTapHighlightColor: 'transparent' }}
                 >
-                  <FiShoppingCart className="text-lg sm:text-xl" />
+                  <FiShoppingCart className="text-lg" />
                   <span>Add to Cart</span>
                 </button>
                 <button
                   onClick={toggleWishlist}
-                  className={`flex-1 px-4 py-3 rounded-lg font-bold transition text-sm sm:text-base shadow-md hover:shadow-lg flex items-center justify-center gap-2 ${
+                  className={`flex-1 px-4 py-3 rounded-lg font-bold transition text-sm shadow-md hover:shadow-lg active:opacity-80 flex items-center justify-center gap-2 touch-manipulation ${
                     isWishlisted
                       ? "bg-red-500 text-white border-2 border-red-500 hover:bg-red-600 hover:border-red-600"
                       : "border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
                   }`}
                   title="Add to Wishlist"
+                  style={{ WebkitTapHighlightColor: 'transparent' }}
                 >
                   <FiHeart
-                    className="text-lg sm:text-xl"
+                    className="text-lg"
                     fill={isWishlisted ? "currentColor" : "none"}
                   />
                   <span>Wishlist</span>
@@ -732,10 +751,10 @@ const ProductDetails = () => {
               {/* Buy Now Button */}
               <button
                 onClick={handleBuyNow}
-                className="w-full px-4 py-3 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-lg hover:from-orange-500 hover:to-orange-600 transition shadow-lg hover:shadow-xl text-sm sm:text-base mb-4 flex items-center justify-center gap-2"
+                className="w-full px-4 py-3 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-lg hover:from-orange-500 hover:to-orange-600 active:from-orange-600 active:to-orange-700 transition shadow-lg hover:shadow-xl text-sm mb-4 touch-manipulation"
+                style={{ WebkitTapHighlightColor: 'transparent' }}
               >
-                <FiShoppingCart className="text-lg sm:text-xl" />
-                <span>Buy Now</span>
+                🛒 Buy Now
               </button>
 
               {/* Share */}
@@ -934,7 +953,6 @@ const ProductDetails = () => {
           )}
         </div>
       </div>
-    </div>
   );
 };
 

@@ -1,5 +1,4 @@
 import React from "react";
-import { FiShoppingCart } from "react-icons/fi";
 
 const ProductDetailModal = ({ product, onClose }) => {
   if (!product) return null;
@@ -60,14 +59,12 @@ const ProductDetailModal = ({ product, onClose }) => {
               {product.description || "No description available."}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button className="px-4 py-2 rounded-2xl border border-black hover:bg-gray-50 transition flex items-center justify-center gap-2 text-sm sm:text-base">
-                <FiShoppingCart className="text-base" />
-                <span>Add to cart</span>
+            <div className="flex gap-3">
+              <button className="px-4 py-2 rounded-2xl border border-black">
+                Add to cart
               </button>
-              <button className="px-4 py-2 rounded-2xl bg-black text-white hover:bg-gray-800 transition flex items-center justify-center gap-2 text-sm sm:text-base">
-                <FiShoppingCart className="text-base" />
-                <span>Buy now</span>
+              <button className="px-4 py-2 rounded-2xl bg-black text-white">
+                Buy now
               </button>
             </div>
           </div>

@@ -1,11 +1,12 @@
 // src/components/Navbar.jsx
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FiSearch, FiUser, FiShoppingBag, FiMenu, FiX } from "react-icons/fi";
 import { useAppSelector } from "../app/hooks";
 import { selectCartTotalItems } from "../features/cart/cartSlice";
 
 function Navbar() {
+  const navigate = useNavigate();
   const [navBg, setNavBg] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -33,25 +34,13 @@ function Navbar() {
     }
   }, [showPromoBar]);
 
-  // Close mobile menu when clicking outside or on link
-  useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [mobileMenuOpen]);
-
   const handleSubmitSearch = (e) => {
     e.preventDefault();
-    setSearchOpen(false);
-  };
-
-  const closeMobileMenu = () => {
-    setMobileMenuOpen(false);
+    if (searchQuery.trim()) {
+      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchOpen(false);
+      setSearchQuery("");
+    }
   };
 
   return (
@@ -78,22 +67,14 @@ function Navbar() {
         </div>
       )}
 
-      <nav className="flex justify-between items-center px-6 md:px-16 py-5 overflow-x-hidden">
+      <nav className="flex justify-between items-center px-6 md:px-16 py-5 overflow-x-hidden ">
         <div className="flex items-center gap-4">
           <div className="md:hidden flex items-center">
-            <button 
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2"
-              aria-label="Toggle menu"
-            >
+            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               {mobileMenuOpen ? (
-                <FiX className={`text-2xl transition ${
-                  navBg ? "text-gray-900" : "text-white"
-                }`} />
+                <FiX className="text-2xl text-gray-900" />
               ) : (
-                <FiMenu className={`text-2xl transition ${
-                  navBg ? "text-gray-900" : "text-white"
-                }`} />
+                <FiMenu className="text-2xl text-gray-900" />
               )}
             </button>
           </div>
@@ -107,7 +88,6 @@ function Navbar() {
           </h1>
         </div>
 
-        {/* Desktop Menu */}
         <ul
           className={`hidden md:flex gap-8 font-medium transition ${
             navBg ? "text-gray-800" : "text-white"
@@ -148,23 +128,22 @@ function Navbar() {
         </ul>
 
         <div className="flex items-center gap-4">
-          {/* Mobile Cart Icon */}
+          {/* Cart icon - visible on all screens, positioned in top right */}
           <Link 
             to="/cart" 
-            className="md:hidden relative inline-flex items-center"
-            onClick={closeMobileMenu}
-          >
-            <FiShoppingBag className={`text-xl cursor-pointer hover:text-blue-600 transition ${
+            className={`relative inline-flex items-center text-xl transition ${
               navBg ? "text-gray-800" : "text-white"
-            }`} />
+            }`}
+          >
+            <FiShoppingBag className="cursor-pointer hover:text-blue-600 transition" />
             {cartCount > 0 && (
-              <span className="absolute -top-2 -right-3 bg-red-600 text-white text-xs px-2 rounded-full min-w-[20px] text-center">
+              <span className="absolute -top-2 -right-3 bg-red-600 text-white text-xs px-2 rounded-full">
                 {cartCount}
               </span>
             )}
           </Link>
 
-          {/* Desktop Icons */}
+          {/* Desktop only: Search and Sign In */}
           <div
             className={`hidden md:flex gap-6 text-xl transition items-center ${
               navBg ? "text-gray-800" : "text-white"
@@ -190,131 +169,10 @@ function Navbar() {
                 Sign In
               </span>
             </Link>
-
-            <Link to="/cart" className="relative inline-flex items-center">
-              <FiShoppingBag className="text-xl cursor-pointer hover:text-blue-600 transition" />
-              {cartCount > 0 && (
-                <span className="absolute -top-2 -right-3 bg-red-600 text-white text-xs px-2 rounded-full min-w-[20px] text-center">
-                  {cartCount}
-                </span>
-              )}
-            </Link>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
-      {mobileMenuOpen && (
-        <>
-          {/* Backdrop */}
-          <div
-            className="fixed inset-0 bg-black/50 z-40 md:hidden"
-            onClick={closeMobileMenu}
-          />
-          
-          {/* Mobile Menu */}
-          <div
-            className={`fixed top-0 left-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
-              mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-            }`}
-          >
-            <div className="flex flex-col h-full">
-              {/* Menu Header */}
-              <div className="flex items-center justify-between p-6 border-b">
-                <h2 className="text-xl font-bold text-gray-900">Menu</h2>
-                <button
-                  onClick={closeMobileMenu}
-                  className="p-2 hover:bg-gray-100 rounded-full transition"
-                  aria-label="Close menu"
-                >
-                  <FiX className="text-2xl text-gray-900" />
-                </button>
-              </div>
-
-              {/* Menu Links */}
-              <nav className="flex-1 overflow-y-auto py-6">
-                <ul className="space-y-1 px-4">
-                  <li>
-                    <Link
-                      to="/"
-                      onClick={closeMobileMenu}
-                      className="block px-4 py-3 text-gray-900 hover:bg-gray-100 rounded-lg transition font-medium"
-                    >
-                      Home
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/products"
-                      onClick={closeMobileMenu}
-                      className="block px-4 py-3 text-gray-900 hover:bg-gray-100 rounded-lg transition font-medium"
-                    >
-                      Products
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/about"
-                      onClick={closeMobileMenu}
-                      className="block px-4 py-3 text-gray-900 hover:bg-gray-100 rounded-lg transition font-medium"
-                    >
-                      About
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/contact"
-                      onClick={closeMobileMenu}
-                      className="block px-4 py-3 text-gray-900 hover:bg-gray-100 rounded-lg transition font-medium"
-                    >
-                      Contact
-                    </Link>
-                  </li>
-                </ul>
-              </nav>
-
-              {/* Menu Footer with Actions */}
-              <div className="border-t p-6 space-y-4">
-                <button
-                  onClick={() => {
-                    setSearchOpen(true);
-                    closeMobileMenu();
-                  }}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition font-medium text-gray-900"
-                >
-                  <FiSearch className="text-xl" />
-                  <span>Search</span>
-                </button>
-                
-                <Link
-                  to="/signin"
-                  onClick={closeMobileMenu}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-gray-300 hover:bg-gray-50 rounded-lg transition font-medium text-gray-900"
-                >
-                  <FiUser className="text-xl" />
-                  <span>Sign In</span>
-                </Link>
-
-                <Link
-                  to="/cart"
-                  onClick={closeMobileMenu}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-black text-white hover:bg-gray-800 rounded-lg transition font-medium relative"
-                >
-                  <FiShoppingBag className="text-xl" />
-                  <span>Cart</span>
-                  {cartCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-2 rounded-full min-w-[24px] text-center">
-                      {cartCount}
-                    </span>
-                  )}
-                </Link>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
-
-      {/* Search Modal */}
       {searchOpen && (
         <>
           <div
@@ -342,6 +200,69 @@ function Navbar() {
                 Search
               </button>
             </form>
+          </div>
+        </>
+      )}
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-[40] bg-black/50 backdrop-blur-sm md:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <div className="fixed top-0 left-0 h-full w-64 bg-white shadow-2xl z-[50] md:hidden transform transition-transform duration-300 ease-in-out">
+            <div className="p-6 border-b">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold text-gray-900">Menu</h2>
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-gray-600 hover:text-gray-900"
+                >
+                  <FiX className="text-2xl" />
+                </button>
+              </div>
+              <nav className="flex flex-col gap-4">
+                <Link
+                  to="/"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-gray-700 hover:text-blue-600 transition font-medium py-2"
+                >
+                  Home
+                </Link>
+                <Link
+                  to="/products"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-gray-700 hover:text-blue-600 transition font-medium py-2"
+                >
+                  Products
+                </Link>
+                <Link
+                  to="/about"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-gray-700 hover:text-blue-600 transition font-medium py-2"
+                >
+                  About
+                </Link>
+                <Link
+                  to="/contact"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-gray-700 hover:text-blue-600 transition font-medium py-2"
+                >
+                  Contact
+                </Link>
+              </nav>
+            </div>
+            <div className="p-6 border-t mt-auto">
+              <Link
+                to="/signin"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition font-medium py-2"
+              >
+                <FiUser />
+                <span>Sign In</span>
+              </Link>
+            </div>
           </div>
         </>
       )}

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import collheadphones from "../assets/collheadphones.png";
-import collearbuds from "../assets/collearbuds.png";
+import collheadphones from "../assets/Headphones4.png";
+import collearbuds from "../assets/Earbuds1.png";
 import usb from "../assets/usb.png";
 
 const ShopCollection = () => {

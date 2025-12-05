@@ -8,11 +8,11 @@ export default function Footer() {
     <>
       {/* Newsletter Section */}
       <section
-        className="w-full h-full py-20 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${newsletterBg})` }}
+        className="w-full h-full md:mt-10 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${newsletterBg})`, paddingTop: '10%'}}
       >
         <div className="max-w-7xl mx-auto px-4 flex flex-col items-center justify-center text-center text-black">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl items-center py-10">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               Join Our Newsletter
             </h2>
@@ -36,7 +36,7 @@ export default function Footer() {
       </section>
 
       {/* Footer */}
-      <footer className="w-full bg-black text-white py-14">
+      <footer className="w-full bg-black text-white py-14 -mt-px">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col lg:flex-row justify-between gap-10">
             <div>
@@ -45,10 +45,10 @@ export default function Footer() {
             </div>
 
             <div className="flex gap-10 text-sm">
-              <Link to="/">Home</Link>
-              <Link to="/products">Product</Link>
-              <Link to="/about">About</Link>
-              <Link to="/contact">Contact Us</Link>
+              <Link to="/" className="hover:text-blue-400 transition">Home</Link>
+              <Link to="/products" className="hover:text-blue-400 transition">Products</Link>
+              <Link to="/about" className="hover:text-blue-400 transition">About</Link>
+              <Link to="/contact" className="hover:text-blue-400 transition">Contact Us</Link>
             </div>
           </div>
           <div className="mt-14">
